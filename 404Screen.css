@@ -1,13 +1,12 @@
-body{
-    background-image: url("imagenes/backgroung-login.jpg");
-    background-size: cover;
-
+html {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
 }
 
-.bg-success{
-    --bs-bg-opacity:1;
-    background-color: rgba(var(--bs-success-rgb), var(--bs-bg-opacity)) !important;
-    
+body{
+    background: rgb(34,193,195);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
 }
 
 #login{
@@ -28,4 +27,8 @@ input{
 
 #margin{
     margin:1%;
+}
+
+#botones{
+    margin-top: 2%;
 }
