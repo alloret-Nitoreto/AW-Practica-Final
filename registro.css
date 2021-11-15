@@ -1,0 +1,28 @@
+html {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+body{
+    background: rgb(34,193,195);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+}
+
+h1{
+    margin-left: auto;
+    margin-right: auto;
+    font-size:600%;
+}
+
+input{
+    width: 60%;
+}
+
+#margin{
+    margin:1%;
+}
+
+#botones{
+    margin-top: 2%;
+}
