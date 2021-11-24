@@ -9,6 +9,7 @@ const app = express();
 const multerFactory = multer({ storage: multer.memoryStorage() });
 
 const mysql = require("mysql");
+const { symlinkSync } = require("fs");
 const pool = mysql.createPool({
     host: "localhost",
     user: "root",
@@ -45,19 +46,19 @@ app.listen(3000, function (err) {
 
 app.post("/procesar_formulario", multerFactory.single('foto'),
     function (request, response) {
+        
         let usuario = {
-            nombre: request.body.nombre,
-            apellidos: request.body.apellidos,
-            fumador: request.body.fumador === "si" ? "Sí" : "No",
+            mail: request.body.mail,
+            apellidos: request.body.password,
+            nickName: request.body.nickName,
             imagen: null
         };
         if (request.file) {
             usuario.imagen = request.file.buffer;
         }
         insertarUsuario(usuario, function (err, newId) {
-            if (!err) {
-                usuario.id = newId;
-                response.render("datosFormularioBD", usuario);
+            if (err) {
+                
             }
         });
     });
@@ -68,9 +69,9 @@ function insertarUsuario(usuario, callback) {
             callback(err);
         else {
             let sql =
-                "INSERT INTO personas(Nombre, Apellidos, Fumador, Foto) VALUES(?, ?, ?, ?)";
-            con.query(sql, [usuario.nombre, usuario.apellidos,
-            usuario.fumador, usuario.imagen],
+                "INSERT INTO usuarios(mail, password, foto, nickName) VALUES(?, ?, ?, ?)";
+            con.query(sql, [usuario.mail, usuario.password,
+            usuario.imagen, usuario.nickName],
                 function (err, result) {
                     con.release();
                     if (err)

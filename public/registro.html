@@ -21,18 +21,18 @@
         <div class="d-flex flex-column align-items-center">
           <form method="POST" action="procesar_formulario" enctype="multipart/form-data">
             <h4 id = "margin">Correo</h4>
-            <input id = "margin" type="text" name=" correo">             
-            <h4 id = "margin">contraseña</h4>
-            <input id = "margin" type="text">
+            <input id = "margin" type="text" name="mail">             
+            <h4 id = "margin">contraseña</h4 >
+            <input id = "margin" type="text" name="password">
             <h4 id = "margin">Confirmar contraseña</h4>
-            <input id = "margin" type="text">             
+            <input id = "margin" type="text" name="confPass">             
             <h4 id = "margin">Nombre por mostrar</h4>
-            <input id = "margin" type="text">
+            <input id = "margin" type="text" name="nickName">
             <h4 id = "margin">Imagen de perfil</h4>
-            <input id = "margin" type="file">
+            <input id = "margin" type="file" name="foto">
             <div class = "d-flex flex-row" id = "botones">
                 <button  class = "btn btn-secondary" id = "margin">iniciar sesion</button>
-                <button class = "btn btn-primary" id = "margin">crear cuenta</button>
+                <button class = "btn btn-primary" type="submit" id = "margin">crear cuenta</button>
             </div> 
           </form>
         </div>
