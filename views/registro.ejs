@@ -21,11 +21,17 @@
         <div class="d-flex flex-column align-items-center">
           <form method="POST" action="procesar_formulario" enctype="multipart/form-data">
             <h4 id = "margin">Correo</h4>
-            <input id = "margin" type="text" name="mail">             
+            <input id = "margin" type="text" name="email">  
+             <% if (errores.email) { %>
+              <span class="rojo"> <%= errores.email.msg %> </span>
+             <% } %>           
             <h4 id = "margin">contraseña</h4 >
             <input id = "margin" type="text" name="password">
             <h4 id = "margin">Confirmar contraseña</h4>
-            <input id = "margin" type="text" name="confPass">             
+            <input id = "margin" type="text" name="confPass">  
+            <% if (errores.email) { %>
+              <span class="rojo"> <%= errores.password.msg %> </span>
+             <% } %>                
             <h4 id = "margin">Nombre por mostrar</h4>
             <input id = "margin" type="text" name="nickName">
             <h4 id = "margin">Imagen de perfil</h4>
