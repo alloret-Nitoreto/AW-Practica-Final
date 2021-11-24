@@ -49,7 +49,7 @@ app.post("/procesar_formulario", multerFactory.single('foto'),
         
         let usuario = {
             mail: request.body.mail,
-            apellidos: request.body.password,
+            password: request.body.password,
             nickName: request.body.nickName,
             imagen: null
         };
