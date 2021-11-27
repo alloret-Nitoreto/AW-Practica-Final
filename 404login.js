@@ -19,6 +19,8 @@ const pool = mysql.createPool({
 });
 
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
 
 const ficherosEstaticos =
     path.join(__dirname, "public");
@@ -32,7 +34,7 @@ app.get("/", function (request, response) {
 
 
 app.get("/crear_cuenta", function (request, response) {
-    response.redirect("/registro.ejs");
+    response.render("/registro.ejs");
 });
 
 
