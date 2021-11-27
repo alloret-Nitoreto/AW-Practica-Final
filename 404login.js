@@ -29,24 +29,17 @@ app.use(express.static(ficherosEstaticos));
 
 
 app.get("/", function (request, response) {
-    response.redirect("/404login.html");
+    response.redirect("404login.html");
 });
 
 
 app.get("/crear_cuenta", function (request, response) {
-    response.render("/registro.ejs");
+    let error = {
+        email: false,
+        passWord: false,
+    };
+    response.render("registro.ejs", {errores:error});
 });
-
-
-app.listen(3000, function (err) {
-    if (err) {
-        console.error("No se pudo inicializar el servidor: " +
-            err.message);
-    } else {
-        console.log("Servidor arrancado en el puerto 3000");
-    }
-});
-
 
 const igual = (pass1,pass2) => {
     return pass1 == pass2;
@@ -86,7 +79,7 @@ app.post(
                 }
             });
         } else {
-            response.render("/registro.ejs", {errores: errors.mapped()});    
+            response.render("registro.ejs", {errores: errors.mapped()});    
         }
 });
 
@@ -109,3 +102,12 @@ function insertarUsuario(usuario, callback) {
         }
     });
 }
+
+app.listen(3000, function (err) {
+    if (err) {
+        console.error("No se pudo inicializar el servidor: " +
+            err.message);
+    } else {
+        console.log("Servidor arrancado en el puerto 3000");
+    }
+});

@@ -26,10 +26,11 @@
               <span class="rojo"> <%= errores.email.msg %> </span>
              <% } %>           
             <h4 id = "margin">contraseña</h4 >
+              
             <input id = "margin" type="text" name="password">
             <h4 id = "margin">Confirmar contraseña</h4>
             <input id = "margin" type="text" name="confPass">  
-            <% if (errores.email) { %>
+            <% if (errores.passWord) { %>
               <span class="rojo"> <%= errores.password.msg %> </span>
              <% } %>                
             <h4 id = "margin">Nombre por mostrar</h4>
