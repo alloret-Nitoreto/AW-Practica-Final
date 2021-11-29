@@ -7,6 +7,9 @@ const multer = require("multer");
 const { check, validationResult } = require("express-validator");
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 const multerFactory = multer({ storage: multer.memoryStorage() });
 
 const mysql = require("mysql");
@@ -34,29 +37,27 @@ app.get("/", function (request, response) {
 
 
 app.get("/crear_cuenta", function (request, response) {
-    let error = {
-        email: false,
-        passWord: false,
-    };
-    response.render("registro.ejs", {errores:error});
+    response.render("registro.ejs", {errores:{}});
 });
 
-const igual = (pass1,pass2) => {
-    return pass1 == pass2;
+const igual = (param1, param2) => {
+    return param1 == param2;
 };
-    
+Configuar el ejs para que envie json en el post
 app.post(
     '/procesar_formulario',
     // El campo login ha de ser no vacío.
-    check("email", "Nombre de usuario vacío").notEmpty(),
+    check("email", "Este campo no puede estar vacío").notEmpty(),
     // El campo email debe tener formato de correo
-    check("email","No es un correo electronico").isEmail(),
+    check("email","No es un correo electronico valido").isEmail(),
     // El campo password ha de ser no vacío.
-    check("passWord", "Nombre de usuario vacío").notEmpty(),
+    check("password", "Este campo no puede estar vacío").notEmpty(),
     // El campo confimar password ha de ser no vacío.
-    check("confPassWord", "Nombre de usuario vacío").notEmpty(),
+    check("confPass", "Este campo no puede estar vacío").notEmpty(),
     // El campo nickname ha de ser no vacío.
-    check("nickName", "Nombre de usuario vacío").notEmpty(),
+    check("nickname", "Este campo no puede estar vacío").notEmpty(),
+    //El campo passwordy confPass son iguales
+    check(["password","confPass"], "sadasd").custom(igual),
     // El campo password debe coincidir con confirmar password.
     //check("confPassWord","passWord", "Nombre de usuario no empieza por a").igual(confPassWord,passWord),
     // El campo login solo puede contener caracteres alfanuméricos.
@@ -67,7 +68,7 @@ app.post(
             let usuario = {
                 email: request.body.email,
                 password: request.body.password,
-                nickName: request.body.nickName,
+                nickname: request.body.nickname,
                 imagen: null
             };
             if (request.file) {
@@ -79,6 +80,7 @@ app.post(
                 }
             });
         } else {
+            let er = errors.mapped();
             response.render("registro.ejs", {errores: errors.mapped()});    
         }
 });

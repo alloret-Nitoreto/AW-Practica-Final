@@ -17,24 +17,30 @@
             <h1>404</h1>
         </div>
      </div>
-     <div class = "container">
+     <div class = "container-fluid">
         <div class="d-flex flex-column align-items-center">
-          <form method="POST" action="procesar_formulario" enctype="multipart/form-data">
+          <form method="POST" action="procesar_formulario" enctype="multipart/form-data" class = "loginForm">
             <h4 id = "margin">Correo</h4>
             <input id = "margin" type="text" name="email">  
              <% if (errores.email) { %>
               <span class="rojo"> <%= errores.email.msg %> </span>
-             <% } %>           
+             <% } %>   
+
             <h4 id = "margin">contraseña</h4 >
-              
-            <input id = "margin" type="text" name="password">
-            <h4 id = "margin">Confirmar contraseña</h4>
-            <input id = "margin" type="text" name="confPass">  
-            <% if (errores.passWord) { %>
+            <input id = "margin" type="password" name="password">
+            <% if (errores.password) { %>
               <span class="rojo"> <%= errores.password.msg %> </span>
-             <% } %>                
+             <% } %>  
+            <h4 id = "margin">Confirmar contraseña</h4>
+            <input id = "margin" type="password" name="confPass">
+            <% if (errores.confPass) { %>
+              <span class="rojo"> <%= errores.confPass.msg %> </span>
+             <% } %>               
             <h4 id = "margin">Nombre por mostrar</h4>
-            <input id = "margin" type="text" name="nickName">
+            <input id = "margin" type="text" name="nickname">
+            <% if (errores.nickname) { %>
+              <span class="rojo"> <%= errores.nickname.msg %> </span>
+             <% } %>       
             <h4 id = "margin">Imagen de perfil</h4>
             <input id = "margin" type="file" name="foto">
             <div class = "d-flex flex-row" id = "botones">
