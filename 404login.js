@@ -43,9 +43,9 @@ app.get("/crear_cuenta", function (request, response) {
 const igual = (param1, param2) => {
     return param1 == param2;
 };
-Configuar el ejs para que envie json en el post
+
 app.post(
-    '/procesar_formulario',
+    '/procesar_formulario', multerFactory.none(),
     // El campo login ha de ser no vacío.
     check("email", "Este campo no puede estar vacío").notEmpty(),
     // El campo email debe tener formato de correo
@@ -57,7 +57,7 @@ app.post(
     // El campo nickname ha de ser no vacío.
     check("nickname", "Este campo no puede estar vacío").notEmpty(),
     //El campo passwordy confPass son iguales
-    check(["password","confPass"], "sadasd").custom(igual),
+    check(["password","confPass"], "Deben coincidir").custom(igual),
     // El campo password debe coincidir con confirmar password.
     //check("confPassWord","passWord", "Nombre de usuario no empieza por a").igual(confPassWord,passWord),
     // El campo login solo puede contener caracteres alfanuméricos.
