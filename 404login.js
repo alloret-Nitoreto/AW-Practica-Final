@@ -30,18 +30,35 @@ const ficherosEstaticos =
 
 app.use(express.static(ficherosEstaticos));
 
+//-----------------GET-------------------------
 
 app.get("/", function (request, response) {
-    response.redirect("404login.html");
+    response.render("404login.ejs");
 });
-
 
 app.get("/crear_cuenta", function (request, response) {
     response.render("registro.ejs", {errores:{}});
 });
 
+app.get("/ir_inicar_sesion", function (request, response) {
+    response.render("404login.ejs");
+});
+
 const igual = (param1, param2) => {
     return param1 == param2;
+};
+
+//-----------------POST-------------------------
+
+app.post('/inicar_sesion',(request, response) => {
+    let usuario = {
+        email: request.body.email,
+        password: request.body.password,
+        nickname: request.body.nickname,
+        imagen: null
+    };
+});
+
 };
 
 app.post(

@@ -43,11 +43,15 @@
              <% } %>       
             <h4 id = "margin">Imagen de perfil</h4>
             <input id = "margin" type="file" name="foto">
-            <div class = "d-flex flex-row" id = "botones">
-                <button  class = "btn btn-secondary" id = "margin">iniciar sesion</button>
-                <button class = "btn btn-primary" type="submit" id = "margin">crear cuenta</button>
-            </div> 
+            <div class="float-left">
+              <button class = "btn btn-primary" type="submit" id = "margin">crear cuenta</button>
+            </div>
           </form>
+          <form  method="GET" action="/ir_inicar_sesion">
+            <div class="float-left">
+              <button  class = "btn btn-secondary" id = "margin">iniciar sesion</button>
+            </div>
+          </form>   
         </div>
 
      </div>    <!-- Optional JavaScript -->
