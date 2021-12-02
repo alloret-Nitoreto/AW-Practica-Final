@@ -59,8 +59,6 @@ app.post('/inicar_sesion',(request, response) => {
     };
 });
 
-};
-
 app.post(
     '/procesar_formulario', multerFactory.none(),
     // El campo login ha de ser no vacío.
