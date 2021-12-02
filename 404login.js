@@ -5,8 +5,10 @@ const path = require("path");
 const express = require("express");
 const multer = require("multer");
 const { check, validationResult } = require("express-validator");
+const bodyParser = require("body-parser");
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
@@ -50,19 +52,40 @@ const igual = (param1, param2) => {
 
 //-----------------POST-------------------------
 
-app.post('/inicar_sesion',(request, response) => {
+app.post('/inicar_sesion', (request, response) => {
     let usuario = {
         email: request.body.email,
         password: request.body.password,
-        nickname: request.body.nickname,
-        imagen: null
     };
+    pool.getConnection(function(err, connection) { 
+        if (err) {  
+            callback(new Error("Error de acceso a la base de datos:" + err));  
+        } 
+        else { 
+        connection.query("SELECT * FROM usuarios WHERE email = ? AND password = ?" , 
+        [usuario.email, usuario.password], 
+        function(err, rows) { 
+            connection.release(); // devolver al pool la conexión 
+            if (err) { 
+                callback(new Error("Error al inicar sesion:" + err)); 
+            } 
+            else { 
+                if (rows.length === 0) { 
+                    console.log("No es correcta la contraseña o el mail"); //no está el usuario con el password proporcionado 
+                } 
+                else { 
+                    console.log("INICIADA CORRECTAMENTE");
+                    //Deberia llevar a la pantalla principal
+                }            
+            } 
+        }); 
+        } 
+    } 
+    ); 
 });
 
-};
-
 app.post(
-    '/procesar_formulario', multerFactory.none(),
+    '/procesar_formulario', multerFactory.none(), multerFactory.single('foto'),
     // El campo login ha de ser no vacío.
     check("email", "Este campo no puede estar vacío").notEmpty(),
     // El campo email debe tener formato de correo
@@ -78,7 +101,6 @@ app.post(
     // El campo password debe coincidir con confirmar password.
     //check("confPassWord","passWord", "Nombre de usuario no empieza por a").igual(confPassWord,passWord),
     // El campo login solo puede contener caracteres alfanuméricos.
-    multerFactory.single('foto'),
     (request, response) => {
         const errors = validationResult(request);
         if (errors.isEmpty()) {
@@ -91,9 +113,9 @@ app.post(
             if (request.file) {
                 usuario.imagen = request.file.buffer;
             }
-            insertarUsuario(usuario, function (err, newId) {
+            insertarUsuario(usuario, function (err) {
                 if (err) {
-                    //Poner un pop de fallo en la base de datos
+                  alert("Error de conexión a la base de datos" + err);
                 }
             });
         } else {
@@ -107,6 +129,9 @@ function insertarUsuario(usuario, callback) {
         if (err)
             callback(err);
         else {
+            if(usuario.imagen == null){
+                
+            }
             let sql =
                 "INSERT INTO usuarios(email, password, foto, nickName) VALUES(?, ?, ?, ?)";
             con.query(sql, [usuario.email, usuario.password,
@@ -114,9 +139,10 @@ function insertarUsuario(usuario, callback) {
                 function (err, result) {
                     con.release();
                     if (err)
-                        callback(err);
+                        callback(new Error("No se ha podido inicar sesion"));
                     else
-                        callback(null, result.insertId);
+                        console.log("CREADA CORRECTAMENTE")
+                        //Deberia llevar a la pantalla principal
                 });
         }
     });

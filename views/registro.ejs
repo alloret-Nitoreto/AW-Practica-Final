@@ -19,7 +19,7 @@
      </div>
      <div class = "container-fluid">
         <div class="d-flex flex-column align-items-center">
-          <form method="POST" action="procesar_formulario" enctype="multipart/form-data" class = "loginForm">
+          <form method="POST" action="/procesar_formulario" enctype="multipart/form-data" class = "loginForm">
             <h4 id = "margin">Correo</h4>
             <input id = "margin" type="text" name="email">  
              <% if (errores.email) { %>
@@ -49,7 +49,7 @@
           </form>
           <form  method="GET" action="/ir_inicar_sesion">
             <div class="float-left">
-              <button  class = "btn btn-secondary" id = "margin">iniciar sesion</button>
+              <button  class = "btn btn-secondary" type="submit" id = "margin">iniciar sesion</button>
             </div>
           </form>   
         </div>

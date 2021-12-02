@@ -22,10 +22,10 @@ h1{
 }
 
 input{
-    width: 60%;
+    width: 120%;
 }
 
-#margin{
+.margin{
     margin:1%;
 }
 
