@@ -4,6 +4,7 @@ const url = require("url");
 const path = require("path");
 const express = require("express");
 const multer = require("multer");
+const fs = require("fs");
 const { check, validationResult } = require("express-validator");
 const bodyParser = require("body-parser");
 const app = express();
@@ -35,7 +36,7 @@ app.use(express.static(ficherosEstaticos));
 //-----------------GET-------------------------
 
 app.get("/", function (request, response) {
-    response.render("404login.ejs");
+    response.render("404login.ejs", {errores:{}});
 });
 
 app.get("/crear_cuenta", function (request, response) {
@@ -43,49 +44,64 @@ app.get("/crear_cuenta", function (request, response) {
 });
 
 app.get("/ir_inicar_sesion", function (request, response) {
-    response.render("404login.ejs");
+    response.render("404login.ejs", {errores:{}});
 });
 
 const igual = (param1, param2) => {
-    return param1 == param2;
+    return param1 === param2;
 };
 
 //-----------------POST-------------------------
 
-app.post('/inicar_sesion', (request, response) => {
+app.post('/inicar_sesion',
+    // El campo login ha de ser no vacío.
+    check("email", "Este campo no puede estar vacío").notEmpty(),
+    // El campo email debe tener formato de correo
+    check("email","No es un correo electronico valido").isEmail(),
+    // El campo password ha de ser no vacío.
+    check("password", "Este campo no puede estar vacío").notEmpty(),
+    (request, response) => {
+
     let usuario = {
         email: request.body.email,
         password: request.body.password,
     };
-    pool.getConnection(function(err, connection) { 
-        if (err) {  
-            callback(new Error("Error de acceso a la base de datos:" + err));  
-        } 
-        else { 
-        connection.query("SELECT * FROM usuarios WHERE email = ? AND password = ?" , 
-        [usuario.email, usuario.password], 
-        function(err, rows) { 
-            connection.release(); // devolver al pool la conexión 
-            if (err) { 
-                callback(new Error("Error al inicar sesion:" + err)); 
+    const errors = validationResult(request);
+
+    if(errors.isEmpty()){
+        pool.getConnection(function(err, connection) { 
+            if (err) {  
+                callback(new Error("Error de acceso a la base de datos:" + err));  
             } 
             else { 
-                if (rows.length === 0) { 
-                    console.log("No es correcta la contraseña o el mail"); //no está el usuario con el password proporcionado 
+            connection.query("SELECT * FROM usuarios WHERE email = ? AND password = ?" , 
+            [usuario.email, usuario.password], 
+            function(err, rows) { 
+                connection.release(); // devolver al pool la conexión 
+                if (err) { 
+                    callback(new Error("Error al inicar sesion:" + err)); 
                 } 
                 else { 
-                    console.log("INICIADA CORRECTAMENTE");
-                    //Deberia llevar a la pantalla principal
-                }            
+                    if (rows.length === 0) { 
+                        console.log("No es correcta la contraseña o el mail"); //no está el usuario con el password proporcionado 
+                    } 
+                    else { 
+                        console.log("INICIADA CORRECTAMENTE");
+                        //Deberia llevar a la pantalla principal
+                    }            
+                } 
+            }); 
             } 
-        }); 
         } 
-    } 
-    ); 
+        ); 
+    } else {
+        let er = errors.mapped();
+        response.render("404login.ejs", {errores: errors.mapped()});    
+    }
 });
 
 app.post(
-    '/procesar_formulario', multerFactory.none(), multerFactory.single('foto'),
+    '/procesar_formulario', multerFactory.single('foto'),
     // El campo login ha de ser no vacío.
     check("email", "Este campo no puede estar vacío").notEmpty(),
     // El campo email debe tener formato de correo
@@ -96,11 +112,8 @@ app.post(
     check("confPass", "Este campo no puede estar vacío").notEmpty(),
     // El campo nickname ha de ser no vacío.
     check("nickname", "Este campo no puede estar vacío").notEmpty(),
-    //El campo passwordy confPass son iguales
-    check(["password","confPass"], "Deben coincidir").custom(igual),
-    // El campo password debe coincidir con confirmar password.
-    //check("confPassWord","passWord", "Nombre de usuario no empieza por a").igual(confPassWord,passWord),
-    // El campo login solo puede contener caracteres alfanuméricos.
+    //Las contraseñas son iguales
+    check('password', 'Las contraseñas no coinciden').custom((value, { req }) => value === req.body.confPass),
     (request, response) => {
         const errors = validationResult(request);
         if (errors.isEmpty()) {
@@ -115,7 +128,7 @@ app.post(
             }
             insertarUsuario(usuario, function (err) {
                 if (err) {
-                  alert("Error de conexión a la base de datos" + err);
+                  console.log("Error de conexión a la base de datos" + err);
                 }
             });
         } else {
@@ -129,17 +142,17 @@ function insertarUsuario(usuario, callback) {
         if (err)
             callback(err);
         else {
-            if(usuario.imagen == null){
-                
+            if(usuario.imagen === null){
+                usuario.imagen = fs.readFileSync(__dirname + '/imagenes/defecto1.png');      
             }
             let sql =
                 "INSERT INTO usuarios(email, password, foto, nickName) VALUES(?, ?, ?, ?)";
             con.query(sql, [usuario.email, usuario.password,
-            usuario.imagen, usuario.nickName],
+            usuario.imagen, usuario.nickname],
                 function (err, result) {
                     con.release();
                     if (err)
-                        callback(new Error("No se ha podido inicar sesion"));
+                        callback(error);
                     else
                         console.log("CREADA CORRECTAMENTE")
                         //Deberia llevar a la pantalla principal

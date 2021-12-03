@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html>
     <head>
        <title>404</title>
        <link rel="shortcut icon" href="imagenes/logo.png">
@@ -18,13 +18,23 @@
                <h1>404</h1>
            </div>
         </div>
-        <div class = "container" id = "login">
+        <div class = "container">
             <div class="d-flex flex-column align-items-center">
                 <form method="POST" action="/inicar_sesion">
-                    <h2 class = "margin">Correo</h2>
-                    <input class = "margin" type="text" name = "email">             
-                    <h2 class = "margin">contraseña</h2>
-                    <input class = "margin" type="text" name = "password">
+                    <div class = "form-grup">
+                        <h2 class = "margin">Correo</h2>
+                        <input class = "margin" type="text" name = "email">
+                        <% if (errores.email) { %>
+                            <span class="rojo"> <%= errores.email.msg %> </span>
+                           <% } %>  
+                    </div>
+                    <div class = "form-grup">
+                        <h2 class = "margin">contraseña</h2>
+                        <input class = "margin" type="text" name = "password">
+                        <% if (errores.password) { %>
+                            <span class="rojo"> <%= errores.password.msg %> </span>
+                            <% } %> 
+                    </div>    
                     <button class = "btn btn-primary" type="submit" class = "margin">iniciar sesion</button>
                 </form>
                  <form method="GET" action="/crear_cuenta">
