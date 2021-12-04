@@ -21,45 +21,44 @@
 
     <div class = "container-fluid">
       <div class="d-flex flex-column align-items-center">
-
-        <div class = "margin">
-          <h4>Correo</h4>
-          <input class = "form-control" type="text" name="email">  
-            <% if (errores.email) { %>
-              <span class="rojo"> <%= errores.email.msg %> </span>
-            <% } %>   
-        </div>
-
-        <div class = "margin">
-          <h4>Contraseña</h4 >
-          <input class = "form-control" type="password" name="password">
-            <% if (errores.password) { %>
-              <span class="rojo"> <%= errores.password.msg %> </span>
-            <% } %>  
-        </div>
-            
-        <div class = "margin">
-          <h4>Repetir Contraseña</h4>
-          <input class = "form-control" type="password" name="confPass">
-            <% if (errores.confPass) { %>
-              <span class="rojo"> <%= errores.confPass.msg %> </span>
-            <% } %>
-        </div>
-                           
-        <div class = "margin">
-          <h4>Username</h4>
-          <input class = "form-control" type="text" name="nickname">
-            <% if (errores.nickname) { %>
-              <span class="rojo"> <%= errores.nickname.msg %> </span>
-            <% } %> 
-        </div>
-            
-        <div class = "margin">
-          <h4>Imagen de perfil</h4>
-          <input class = "form-control-file" type="file" name="foto">
-        </div>
-            
         <form method="POST" action="/procesar_formulario" enctype="multipart/form-data" class = "loginForm">
+          <div class = "margin">
+            <h4>Correo</h4>
+            <input class = "form-control" type="text" name="email">  
+              <% if (errores.email) { %>
+                <span class="rojo"> <%= errores.email.msg %> </span>
+              <% } %>   
+          </div>
+
+          <div class = "margin">
+            <h4>Contraseña</h4 >
+            <input class = "form-control" type="password" name="password">
+              <% if (errores.password) { %>
+                <span class="rojo"> <%= errores.password.msg %> </span>
+              <% } %>  
+          </div>
+              
+          <div class = "margin">
+            <h4>Repetir Contraseña</h4>
+            <input class = "form-control" type="password" name="confPass">
+              <% if (errores.confPass) { %>
+                <span class="rojo"> <%= errores.confPass.msg %> </span>
+              <% } %>
+          </div>
+                            
+          <div class = "margin">
+            <h4>Username</h4>
+            <input class = "form-control" type="text" name="nickname">
+              <% if (errores.nickname) { %>
+                <span class="rojo"> <%= errores.nickname.msg %> </span>
+              <% } %> 
+          </div>
+              
+          <div class = "margin">
+            <h4>Imagen de perfil</h4>
+            <input class = "form-control-file" type="file" name="foto">
+          </div>
+            
           <button class = "btn btn-primary" type="submit" id = "margin">Crear Cuenta</button>
         </form>
 
