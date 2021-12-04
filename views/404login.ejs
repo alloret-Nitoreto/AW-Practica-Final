@@ -18,17 +18,25 @@
                <h1>404</h1>
            </div>
         </div>
-        <div class = "container" id = "login">
+        <div class = "container-fluid" >
             <div class="d-flex flex-column align-items-center">
+            
+                <div class = "margin">
+                    <h2>Correo</h2>
+                    <input class = "form-control" type="text" name = "email"> 
+                </div>
+                       
+                <div class = "margin">
+                    <h2>Contraseña</h2>
+                    <input class = "form-control" type="text" name = "password">
+                </div>
+
                 <form method="POST" action="/inicar_sesion">
-                    <h2 class = "margin">Correo</h2>
-                    <input class = "margin" type="text" name = "email">             
-                    <h2 class = "margin">contraseña</h2>
-                    <input class = "margin" type="text" name = "password">
-                    <button class = "btn btn-primary" type="submit" class = "margin">iniciar sesion</button>
+                    <button class = "btn btn-primary" type="submit">Iniciar Sesión</button>
                 </form>
-                 <form method="GET" action="/crear_cuenta">
-                    <button class = "btn btn-primary" type="submit" class = "margin">crear cuenta</button>
+
+                <form method="GET" action="/crear_cuenta">
+                    <button class = "btn btn-primary" type="submit">Crear Cuenta</button>
                 </form>  
             </div>
         </div>

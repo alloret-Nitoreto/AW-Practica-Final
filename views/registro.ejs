@@ -10,51 +10,66 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel = "stylesheet"  href="registro.css">
+
   </head>
   <body>
     <div class="header">
-        <div class = "row">
-            <h1>404</h1>
-        </div>
-     </div>
-     <div class = "container-fluid">
-        <div class="d-flex flex-column align-items-center">
-          <form method="POST" action="/procesar_formulario" enctype="multipart/form-data" class = "loginForm">
-            <h4 id = "margin">Correo</h4>
-            <input id = "margin" type="text" name="email">  
-             <% if (errores.email) { %>
-              <span class="rojo"> <%= errores.email.msg %> </span>
-             <% } %>   
+      <div class = "row">
+          <h1>404</h1>
+      </div>
+    </div>
 
-            <h4 id = "margin">contraseña</h4 >
-            <input id = "margin" type="password" name="password">
+    <div class = "container-fluid">
+      <div class="d-flex flex-column align-items-center">
+
+        <div class = "margin">
+          <h4>Correo</h4>
+          <input class = "form-control" type="text" name="email">  
+            <% if (errores.email) { %>
+              <span class="rojo"> <%= errores.email.msg %> </span>
+            <% } %>   
+        </div>
+
+        <div class = "margin">
+          <h4>Contraseña</h4 >
+          <input class = "form-control" type="password" name="password">
             <% if (errores.password) { %>
               <span class="rojo"> <%= errores.password.msg %> </span>
-             <% } %>  
-            <h4 id = "margin">Confirmar contraseña</h4>
-            <input id = "margin" type="password" name="confPass">
+            <% } %>  
+        </div>
+            
+        <div class = "margin">
+          <h4>Repetir Contraseña</h4>
+          <input class = "form-control" type="password" name="confPass">
             <% if (errores.confPass) { %>
               <span class="rojo"> <%= errores.confPass.msg %> </span>
-             <% } %>               
-            <h4 id = "margin">Nombre por mostrar</h4>
-            <input id = "margin" type="text" name="nickname">
+            <% } %>
+        </div>
+                           
+        <div class = "margin">
+          <h4>Username</h4>
+          <input class = "form-control" type="text" name="nickname">
             <% if (errores.nickname) { %>
               <span class="rojo"> <%= errores.nickname.msg %> </span>
-             <% } %>       
-            <h4 id = "margin">Imagen de perfil</h4>
-            <input id = "margin" type="file" name="foto">
-            <div class="float-left">
-              <button class = "btn btn-primary" type="submit" id = "margin">crear cuenta</button>
-            </div>
-          </form>
-          <form  method="GET" action="/ir_inicar_sesion">
-            <div class="float-left">
-              <button  class = "btn btn-secondary" type="submit" id = "margin">iniciar sesion</button>
-            </div>
-          </form>   
+            <% } %> 
         </div>
+            
+        <div class = "margin">
+          <h4>Imagen de perfil</h4>
+          <input class = "form-control-file" type="file" name="foto">
+        </div>
+            
+        <form method="POST" action="/procesar_formulario" enctype="multipart/form-data" class = "loginForm">
+          <button class = "btn btn-primary" type="submit" id = "margin">Crear Cuenta</button>
+        </form>
 
-     </div>    <!-- Optional JavaScript -->
+        <form  method="GET" action="/ir_inicar_sesion">
+          <button class = "btn btn-secondary" type="submit" id = "margin">Iniciar Sesión</button>
+        </form>
+
+      </div>
+
+    </div>    <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

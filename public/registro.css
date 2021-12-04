@@ -5,26 +5,36 @@ html {
 }
 
 body{
-    background: rgb(34,193,195);
-    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+    background: linear-gradient(0deg, rgb(255, 255, 255) 0%, hsl(194, 72%, 47%) 100%);
+    display: flex;
+	flex-direction: column;
 }
 
 h1{
     margin-left: auto;
     margin-right: auto;
-    font-size:600%;
+    font-size: 600%;
+    font-style: oblique;
+    color: rgb(255, 255, 255);
+}
+
+h4{
+    font-style: oblique;
+    color: rgb(255, 255, 255);  
 }
 
 input{
-    width: auto;
+    width: 120%;
 }
 
-#margin{
+.margin{
+    width: auto;
     margin:1%;
 }
 
-#botones{
-    margin-top: 2%;
+.btn{
+    background: rgb(45, 158, 252);
+    margin-top: 10%;
 }
 
 .rojo {
