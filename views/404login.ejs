@@ -24,11 +24,17 @@
                     <div class = "margin">
                         <h2>Correo</h2>
                         <input class = "form-control" type="text" name = "email"> 
+                        <% if (errores.email) { %>
+                            <span class="rojo"> <%= errores.email.msg %> </span>
+                           <% } %> 
                     </div>
                         
                     <div class = "margin">
                         <h2>Contraseña</h2>
                         <input class = "form-control" type="text" name = "password">
+                        <% if (errores.password) { %>
+                            <span class="rojo"> <%= errores.password.msg %> </span>
+                            <% } %> 
                     </div>
 
                     <button class = "btn btn-primary" type="submit">Iniciar Sesión</button>
