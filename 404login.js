@@ -47,11 +47,13 @@ app.get("/ir_inicar_sesion", function (request, response) {
     response.render("404login.ejs", {errores:{}});
 });
 
+//-----------------GET---------------------------
+
+//-----------------POST-------------------------
+
 const igual = (param1, param2) => {
     return param1 === param2;
 };
-
-//-----------------POST-------------------------
 
 app.post('/inicar_sesion',
     // El campo login ha de ser no vacío.
@@ -65,6 +67,7 @@ app.post('/inicar_sesion',
     let usuario = {
         email: request.body.email,
         password: request.body.password,
+        imagen:null
     };
     const errors = validationResult(request);
 
@@ -76,18 +79,18 @@ app.post('/inicar_sesion',
             else { 
             connection.query("SELECT * FROM usuarios WHERE email = ? AND password = ?" , 
             [usuario.email, usuario.password], 
-            function(err, rows) { 
+            function(err, result) { 
                 connection.release(); // devolver al pool la conexión 
                 if (err) { 
                     callback(new Error("Error al inicar sesion:" + err)); 
                 } 
                 else { 
-                    if (rows.length === 0) { 
+                    if (result.length === 0) { 
                         console.log("No es correcta la contraseña o el mail"); //no está el usuario con el password proporcionado 
                     } 
                     else { 
-                        console.log("INICIADA CORRECTAMENTE");
-                        //Deberia llevar a la pantalla principal
+                        usuario.imagen = result[0].foto;
+                        response.render("mainpage.ejs", usuario);
                     }            
                 } 
             }); 
@@ -155,7 +158,7 @@ function insertarUsuario(usuario, callback) {
                         callback(error);
                     else
                         console.log("CREADA CORRECTAMENTE")
-                        //Deberia llevar a la pantalla principal
+                        response.render("mainpage.ejs", {});
                 });
         }
     });
