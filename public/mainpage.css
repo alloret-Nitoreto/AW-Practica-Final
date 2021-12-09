@@ -1,0 +1,44 @@
+html {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+body{
+    background: linear-gradient(0deg, hsl(194, 72%, 47%) 0%, rgb(255, 255, 255) 100%);
+    display: flex;
+	flex-direction: column;
+}
+
+h1{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 800%;
+    font-style: oblique;
+    color: rgb(42, 159, 255);
+}
+
+.btn1{
+    width: 150px;
+    background: rgb(42, 159, 255);
+    margin-top: 7%;
+    margin-left: 1%;
+    border: rgb(255, 255, 255);
+}
+
+.btn2{
+    width: 70px;
+    background: rgb(42, 159, 255);
+    margin-top: 7%;
+    margin-left: 1%;
+    border: rgb(255, 255, 255);
+}
+
+.btn3{
+    background: rgb(42, 159, 255);
+    border: rgb(255, 255, 255);
+}
+
+.myrow{
+    margin-top: 2%
+}
