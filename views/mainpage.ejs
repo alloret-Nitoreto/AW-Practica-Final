@@ -13,20 +13,12 @@
         <link rel = "stylesheet"  href= "/public/mainpage.css"> 
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container">
             <div class="row justify-content-between">
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                    <form action="">
-                        <button class = "btn1 btn-primary btn-sm" type="submit" id = "margin">Preguntas</button>
-                    </form>
-                
-                    <form action="">
-                        <button class = "btn1 btn-primary btn-sm" type="submit" id = "margin">Sin Responder</button>
-                    </form>
-                        
-                    <form action="">
-                        <button class = "btn1 btn-primary btn-sm" type="submit" id = "margin">Usuarios</button>
-                    </form>
+                    <button class = "btn1 btn-primary btn-sm" id = "p">Preguntas</button>
+                    <button class = "btn1 btn-primary btn-sm" id = "sr">Sin Responder</button>
+                    <button class = "btn1 btn-primary btn-sm" id = "u">Usuarios</button>
                 </div>
 
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2 align-self-center">
@@ -34,19 +26,17 @@
                 </div>
 
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                    <img src="" alt="">
-                    <h5></h5>
-                    <form action="/cerrar_sesion">
-                        <button class = "btn2 btn-primary btn-sm" type="submit" id = "margin">Log Out</button>
-                    </form>
+                    <img src="/imagenes/marta.png" alt="Imagen del dibujo animado de una chica con el pelo rosa">
+                    <h5>Hola</h5>
+                    <button class = "btn2 btn-primary btn-sm align-self-right" id = "lo">Log Out</button>
                 </div>
                  
             </div> 
         
             <div class="row myrow justify-content-center">
                 <form action="/search">
-                    <button class = "btn3 btn-primary btn-sm" type="submit" id = "margin">Buscar</button>
-                    <input type ="text" size="150">
+                    <button class = "btn3 btn-primary btn-sm" type="submit" id = "b">Buscar</button>
+                    <input type ="text" size="130">
                 </form>    
             </div>
               
