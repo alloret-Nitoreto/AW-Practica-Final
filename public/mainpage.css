@@ -29,7 +29,7 @@ h1{
 .btn2{
     width: 70px;
     background: rgb(42, 159, 255);
-    margin-top: 7%;
+    margin-top: 1%;
     margin-left: 1%;
     border: rgb(255, 255, 255);
 }
@@ -39,6 +39,21 @@ h1{
     border: rgb(255, 255, 255);
 }
 
+.mycol{
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .myrow{
+    margin-top: 2.5%
+}
+
+.myrow1{
     margin-top: 5%
+}
+
+#imgperfil{
+    margin-bottom: 2%;
+    width:60px;
+    height:60px;
 }
