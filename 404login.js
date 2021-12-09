@@ -67,7 +67,8 @@ app.post('/inicar_sesion',
     let usuario = {
         email: request.body.email,
         password: request.body.password,
-        imagen:null
+        imagen:null,
+        nickname:null
     };
     const errors = validationResult(request);
 
@@ -89,8 +90,9 @@ app.post('/inicar_sesion',
                         console.log("No es correcta la contraseña o el mail"); //no está el usuario con el password proporcionado 
                     } 
                     else { 
-                        usuario.imagen = result[0].foto;
-                        response.render("mainpage.ejs", usuario);
+                        usuario.imagen = URL.createObjectURL(result[0].foto); 
+                        usuario.nickname = result[0].nickName;
+                        response.render("mainpage.ejs", {usuario});
                     }            
                 } 
             }); 
@@ -124,7 +126,8 @@ app.post(
                 email: request.body.email,
                 password: request.body.password,
                 nickname: request.body.nickname,
-                imagen: null
+                imagen: null,
+
             };
             if (request.file) {
                 usuario.imagen = request.file.buffer;
