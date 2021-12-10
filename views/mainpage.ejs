@@ -10,7 +10,7 @@
     
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel = "stylesheet"  href= "/public/mainpage.css"> 
+        <link rel = "stylesheet"  href= "mainpage.css"> 
     </head>
     <body>
         <div class="container">
@@ -28,8 +28,8 @@
                 </div>
 
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                    <img src="/imagenes/marta.png" id = "imgperfil" style ="margin-left: 65%" >
-                    <h5 style = "margin-left: 74%; color: rgb(42, 159, 255);">Hola</h5>
+                    <img src="data:img/png;base64,<%= usuario.foto %>" id = "imgperfil" style ="margin-left: 65%" >
+                    <h5 style = "margin-left: 74%; color: rgb(42, 159, 255);"><%= usuario.nickname %></h5>
                     <button class = "btn2 btn-primary btn-sm" style = "margin-left: 58%" id = "lo">Log Out</button>
                    
                 </div>

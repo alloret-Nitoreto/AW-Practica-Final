@@ -67,8 +67,8 @@ app.post('/inicar_sesion',
     let usuario = {
         email: request.body.email,
         password: request.body.password,
-        imagen:null,
-        nickname:null
+        foto: null,
+        nickname: null
     };
     const errors = validationResult(request);
 
@@ -90,7 +90,7 @@ app.post('/inicar_sesion',
                         console.log("No es correcta la contraseña o el mail"); //no está el usuario con el password proporcionado 
                     } 
                     else { 
-                        usuario.imagen = URL.createObjectURL(result[0].foto); 
+                        usuario.foto = Buffer.from(result[0].foto).toString('base64'); 
                         usuario.nickname = result[0].nickName;
                         response.render("mainpage.ejs", {usuario});
                     }            
