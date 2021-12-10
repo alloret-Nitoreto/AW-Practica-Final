@@ -1,77 +1,80 @@
 <!doctype html>
 <html>
-  <head>
-    <title>404</title>
-    <link rel="shortcut icon" href="imagenes/logo.png">
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
- 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel = "stylesheet"  href="registro.css">
+    <head>
+      <title>404</title>
+      <link rel="shortcut icon" href="imagenes/logo.png">
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <link rel = "stylesheet"  href="registro.css">
 
-  </head>
-  <body>
-    <div class="header">
-      <div class = "row">
-          <h1>404</h1>
-      </div>
-    </div>
-
-    <div class = "container-fluid">
-      <div class="d-flex flex-column align-items-center">
-        <form method="POST" action="/procesar_formulario" enctype="multipart/form-data" class = "loginForm">
-          <div class = "margin">
-            <h4>Correo</h4>
-            <input class = "form-control" type="text" name="email">  
-              <% if (errores.email) { %>
-                <span class="rojo"> <%= errores.email.msg %> </span>
-              <% } %>   
+    </head>
+    <body>
+      <div class="header">
+          <div class = "row">
+            <h1>404</h1>
           </div>
-
-          <div class = "margin">
-            <h4>Contraseña</h4 >
-            <input class = "form-control" type="password" name="password">
-              <% if (errores.password) { %>
-                <span class="rojo"> <%= errores.password.msg %> </span>
-              <% } %>  
-          </div>
-              
-          <div class = "margin">
-            <h4>Repetir Contraseña</h4>
-            <input class = "form-control" type="password" name="confPass">
-              <% if (errores.confPass) { %>
-                <span class="rojo"> <%= errores.confPass.msg %> </span>
-              <% } %>
-          </div>
-                            
-          <div class = "margin">
-            <h4>Username</h4>
-            <input class = "form-control" type="text" name="nickname">
-              <% if (errores.nickname) { %>
-                <span class="rojo"> <%= errores.nickname.msg %> </span>
-              <% } %> 
-          </div>
-              
-          <div class = "margin">
-            <h4>Imagen de perfil</h4>
-            <input class = "form-control-file" type="file" name="foto">
-          </div>
-            
-          <button class = "btn btn-primary" type="submit" id = "margin">Crear Cuenta</button>
-        </form>
-
-        <form  method="GET" action="/ir_inicar_sesion">
-          <button class = "btn btn-secondary" type="submit" id = "margin">Iniciar Sesión</button>
-        </form>
-
       </div>
 
-    </div>    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+      <div class = "container-fluid">
+        <div class="d-flex flex-column align-items-center">
+          <form method="POST" action="/procesar_formulario" enctype="multipart/form-data" class = "loginForm">
+            <div class = "margin">
+              <h4>Correo</h4>
+              <input class = "form-control" type="text" name="email">  
+                <% if (errores.email) { %>
+                  <span class="rojo"> <%= errores.email.msg %> </span>
+                <% } %>   
+            </div>
+
+            <div class = "margin">
+              <h4>Contraseña</h4>
+              <input class = "form-control" type="password" name="password">
+                <% if (errores.password) { %>
+                  <span class="rojo"> <%= errores.password.msg %> </span>
+                <% } %>  
+            </div>
+                
+            <div class = "margin">
+              <h4>Repetir Contraseña</h4>
+              <input class = "form-control" type="password" name="confPass">
+                <% if (errores.confPass) { %>
+                  <span class="rojo"> <%= errores.confPass.msg %> </span>
+                <% } %>
+            </div>
+                              
+            <div class = "margin">
+              <h4>Username</h4>
+              <input class = "form-control" type="text" name="nickname">
+                <% if (errores.nickname) { %>
+                  <span class="rojo"> <%= errores.nickname.msg %> </span>
+                <% } %> 
+            </div>
+                
+            <div class = "margin">
+              <h4>Imagen de perfil</h4>
+              <input class = "form-control-file" type="file" name="foto">
+            </div>
+              
+            <button class = "btn btn-primary" type="submit" id = "margin">Crear Cuenta</button>
+            <button class = "btn btn-secondary" onclick="ir_inicar_sesion()" id = "margin">Iniciar Sesión</button>
+
+            <script>
+              function iniciasesion(){
+
+              }
+            </script>
+          </form>
+        </div>
+      </div>   
+      
+      <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
 </html>

@@ -16,9 +16,11 @@
         <div class="container">
             <div class="row  justify-content-between" style=" margin: 10px;">
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                    <button class = "btn1 btn-primary btn-sm" id = "p">Preguntas</button>
-                    <button class = "btn1 btn-primary btn-sm" id = "sr">Sin Responder</button>
-                    <button class = "btn1 btn-primary btn-sm" id = "u">Usuarios</button>
+                    <button class = "btn1 btn-primary btn-sm" onclick="preguntas()" id = "p">Preguntas</button>
+                    
+                    <button class = "btn1 btn-primary btn-sm" onclick="sinResponder()" id = "sr">Sin Responder</button>
+                    
+                    <button class = "btn1 btn-primary btn-sm" onclick="users()" id = "u">Usuarios</button>
                 </div>
 
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
@@ -29,9 +31,28 @@
                     <img src="/imagenes/marta.png" id = "imgperfil" style ="margin-left: 65%" >
                     <h5 style = "margin-left: 74%; color: rgb(42, 159, 255);">Hola</h5>
                     <button class = "btn2 btn-primary btn-sm" style = "margin-left: 58%" id = "lo">Log Out</button>
+                   
                 </div>
                  
             </div> 
+
+            <script>
+                function preguntas(){
+
+                }
+
+                function sinResponder(){
+
+                }
+
+                function users(){
+
+                }
+
+                function logout(){
+
+                }
+            </script>
         
             <div class="row justify-content-center" style="margin: auto">
                 <form action="/search">
@@ -39,8 +60,6 @@
                     <input type ="text" size="118">
                 </form>    
             </div>
-              
-        </div>
-         
+        </div>  
     </body>
 </html>
