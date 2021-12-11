@@ -168,7 +168,7 @@ function insertarUsuario(usuario, callback) {
 //-------------------- Crear cuenta -------------------------
 
 //----------------------- Preguntas -----------------------------
-sinEspacio = (param) => {
+const sinEspacio = (param) => {
     let re = /\s/;
     if(re.search()(param)){
         return true;
@@ -177,7 +177,7 @@ sinEspacio = (param) => {
     }
 };
 
-sinEspacio = (param) => {
+const max5 = (param) => {
     let re = /@/;
     let etiquetas = param.split()(re);
     if(etiquetas.length <= 5){
@@ -197,7 +197,7 @@ app.post(
     //Las etiquetas no pueden tener espacios
     check('etiquetas', 'No puede tener espacios').custom(sinEspacio),
     //Las etiquetas no pueden ser mas de 5
-    check('etiquetas', 'No pueden ser mas de 5').custom(sinEspacio),
+    check('etiquetas', 'No pueden ser mas de 5').custom(max5),
     (request, response) => {
         const errors = validationResult(request);
         if (errors.isEmpty()) {
