@@ -51,10 +51,7 @@ app.get("/ir_inicar_sesion", function (request, response) {
 
 //-----------------POST-------------------------
 
-const igual = (param1, param2) => {
-    return param1 === param2;
-};
-
+//-------------------------Iniciar sesion------------------
 app.post('/inicar_sesion',
     // El campo login ha de ser no vacío.
     check("email", "Este campo no puede estar vacío").notEmpty(),
@@ -104,7 +101,9 @@ app.post('/inicar_sesion',
         response.render("404login.ejs", {errores: errors.mapped()});    
     }
 });
+//-------------------------Iniciar sesion------------------
 
+//-------------------- Crear cuenta -------------------------
 app.post(
     '/procesar_formulario', multerFactory.single('foto'),
     // El campo login ha de ser no vacío.
@@ -161,11 +160,95 @@ function insertarUsuario(usuario, callback) {
                         callback(error);
                     else
                         console.log("CREADA CORRECTAMENTE")
-                        response.render("mainpage.ejs", {});
+                        response.render("404login.ejs", {errores:{}});
                 });
         }
     });
 }
+//-------------------- Crear cuenta -------------------------
+
+//----------------------- Preguntas -----------------------------
+sinEspacio = (param) => {
+    let re = /\s/;
+    if(re.search()(param)){
+        return true;
+    }else{
+        return false;
+    }
+};
+
+sinEspacio = (param) => {
+    let re = /@/;
+    let etiquetas = param.split()(re);
+    if(etiquetas.length <= 5){
+        param = etiquetas;
+        return true;
+    }else{
+        return false;
+    }
+};
+
+app.post(
+    '/procesar_formulario_pregunta', multerFactory.single('foto'),
+    // El campo titulo ha de ser no vacío.
+    check("titulo", "Este campo no puede estar vacío").notEmpty(),
+    // El cuerpo ha de ser no vacío.
+    check("cuerpo", "Este campo no puede estar vacío").notEmpty(),
+    //Las etiquetas no pueden tener espacios
+    check('etiquetas', 'No puede tener espacios').custom(sinEspacio),
+    //Las etiquetas no pueden ser mas de 5
+    check('etiquetas', 'No pueden ser mas de 5').custom(sinEspacio),
+    (request, response) => {
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            let usuario = {
+                email: request.body.email,
+                password: request.body.password,
+                nickname: request.body.nickname,
+                imagen: null,
+
+            };
+            if (request.file) {
+                usuario.imagen = request.file.buffer;
+            }
+            insertarPregunta(usuario, function (err) {
+                if (err) {
+                  console.log("Error de conexión a la base de datos" + err);
+                }
+            });
+        } else {
+            let er = errors.mapped();
+            response.render("registro.ejs", {errores: errors.mapped()});    
+        }
+});
+
+function insertarPregunta(usuario, callback) {
+    pool.getConnection(function (err, con) {
+        if (err)
+            callback(err);
+        else {
+            if(usuario.imagen === null){
+                usuario.imagen = fs.readFileSync(__dirname + '/imagenes/defecto1.png');      
+            }
+            let sql =
+                "INSERT INTO usuarios(email, password, foto, nickName) VALUES(?, ?, ?, ?)";
+            con.query(sql, [usuario.email, usuario.password,
+            usuario.imagen, usuario.nickname],
+                function (err, result) {
+                    con.release();
+                    if (err)
+                        callback(error);
+                    else
+                        console.log("CREADA CORRECTAMENTE")
+                        response.render("404login.ejs", {errores:{}});
+                });
+        }
+    });
+}
+
+//----------------------- Preguntas -----------------------------
+
+//-----------------POST-------------------------
 
 app.listen(3000, function (err) {
     if (err) {

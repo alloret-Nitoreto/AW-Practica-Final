@@ -16,7 +16,7 @@
         <div class="container">
             <div class="row  justify-content-between" style=" margin: 10px;">
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                    <button class = "btn1 btn-primary btn-sm" onclick="preguntas()" id = "p">Preguntas</button>
+                    <a class = "btn1 btn-primary btn-sm" href="/preguntas" id = "p">Preguntas</a>
                     
                     <button class = "btn1 btn-primary btn-sm" onclick="sinResponder()" id = "sr">Sin Responder</button>
                     
@@ -30,16 +30,12 @@
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
                     <img src="data:img/png;base64,<%= usuario.foto %>" id = "imgperfil" style ="margin-left: 65%" >
                     <h5 style = "margin-left: 74%; color: rgb(42, 159, 255);"><%= usuario.nickname %></h5>
-                    <button class = "btn2 btn-primary btn-sm" style = "margin-left: 58%" id = "lo">Log Out</button>
+                    <a class = "btn2 btn-primary btn-sm" style = "margin-left: 58%" href="/404login">Log Out</a>
                 </div>
                  
             </div> 
 
             <script>
-                function preguntas(){
-
-                }
-
                 function sinResponder(){
 
                 }
@@ -49,10 +45,6 @@
                 }
 
                 function perfil(){
-
-                }
-
-                function logOut(){
 
                 }
             </script>
