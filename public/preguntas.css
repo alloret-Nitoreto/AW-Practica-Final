@@ -50,3 +50,48 @@ h1{
     height:60px;
     border-radius: 120px;
 }
+
+#imgperfil1{
+    margin-top: 5%;
+    width:40px;
+    height:40px;
+    border-radius: 120px;
+}
+
+.panel{
+    background-color: rgb(145, 213, 240);
+    border: solid rgb(8, 82, 143);
+    border-radius: 20px;
+    width: auto;
+    height: auto;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 1%;
+}
+
+#hea{
+    color: rgb(8, 82, 143);
+    font-family: 'Courier New', Courier, monospace;
+    font-style: italic;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 70px;
+    margin-top: 5px;
+}
+
+#bod{
+    color: rgb(8, 82, 143);
+    font-size: 18px;
+    margin-left: 70px;
+}
+
+#foo{
+    color: rgb(8, 82, 143);
+    font-size: 16px;
+    margin-left: 70px;
+}
+
+#te{
+    color: rgb(8, 82, 143);
+    font-size: 15px;
+}

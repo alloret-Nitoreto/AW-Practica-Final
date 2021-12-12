@@ -11,16 +11,18 @@ body{
 }
 
 h1{
+    margin-top: 0%;
     margin-left: auto;
     margin-right: auto;
     font-size: 1000%;
-    font-style: oblique;
-    color: rgb(255, 255, 255);
+    font-style:oblique;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: rgb(8, 82, 143);
 }
 
 h2{
     font-style: oblique;
-    color: rgb(255, 255, 255);  
+    color: rgb(8, 82, 143);  
 }
 
 input{
@@ -32,8 +34,11 @@ input{
 }
 
 .btn{
-    background: rgb(45, 158, 252);
-    margin-top: 10%;
+    width: 150px;
+    height: auto;
+    background: rgb(8, 82, 143);
+    margin-top: 3%;
+    border-radius: 10px;
 }
 
 .rojo {
