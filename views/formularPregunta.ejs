@@ -9,7 +9,7 @@
   
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-      <link rel = "stylesheet"  href="/public/formularPregunta.css">
+      <link rel = "stylesheet"  href="formularPregunta.css">
 
     </head>
     <body>
@@ -57,7 +57,7 @@
             <div class = "margin">
               <h4>Cuerpo</h4>
               <input class = "form-control" type="text" name="cuerpo">
-                <% if (errores.password) { %>
+                <% if (errores.cuerpo) { %>
                   <span class="rojo"> <%= errores.cuerpo.msg %> </span>
                 <% } %>  
             </div>
@@ -65,7 +65,7 @@
             <div class = "margin">
               <h4>Etiquetas</h4>
               <input class = "form-control" type="text" name="etiquetas">
-                <% if (errores.confPass) { %>
+                <% if (errores.etiqueta) { %>
                   <span class="rojo"> <%= errores.etiquetas.msg %> </span>
                 <% } %>
             </div>

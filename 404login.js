@@ -4,11 +4,19 @@ const url = require("url");
 const path = require("path");
 const express = require("express");
 const multer = require("multer");
+const session = require("express-session");
 const fs = require("fs");
 const { check, validationResult } = require("express-validator");
 const bodyParser = require("body-parser");
 const app = express();
 
+const middlewareSession = session({
+    saveUninitialized: false,
+    secret: "foobar34",
+    resave:false
+});
+
+app.use(middlewareSession);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -45,6 +53,14 @@ app.get("/crear_cuenta", function (request, response) {
 
 app.get("/ir_inicar_sesion", function (request, response) {
     response.render("404login.ejs", {errores:{}});
+});
+
+app.get("/preguntas", function (request, response) {
+    response.render("preguntas.ejs", {usuario:request.session.usuario});
+});
+
+app.get("/formularPregunta", function (request, response) {
+    response.render("formularPregunta.ejs", {usuario:request.session.usuario, errores:{}});
 });
 
 //-----------------GET---------------------------
@@ -89,6 +105,7 @@ app.post('/inicar_sesion',
                     else { 
                         usuario.foto = Buffer.from(result[0].foto).toString('base64'); 
                         usuario.nickname = result[0].nickName;
+                        request.session.usuario = usuario;
                         response.render("mainpage.ejs", {usuario});
                     }            
                 } 
@@ -169,27 +186,35 @@ function insertarUsuario(usuario, callback) {
 
 //----------------------- Preguntas -----------------------------
 const sinEspacio = (param) => {
-    let re = /\s/;
-    if(re.search()(param)){
-        return true;
+    if(param != ""){
+        let re = /\s/;
+        if(param.search(re)){
+            return true;
+        }else{
+            return false;
+        }
     }else{
         return false;
     }
 };
 
 const max5 = (param) => {
-    let re = /@/;
-    let etiquetas = param.split()(re);
-    if(etiquetas.length <= 5){
-        param = etiquetas;
-        return true;
+    if(param != ""){
+        let re = /(?<=@)\w+/;
+        let etiquetas = param.match(re);
+        if(etiquetas.length <= 5){
+            param = etiquetas;
+            return true;
+        }else{
+            return false;
+        }
     }else{
         return false;
     }
 };
 
 app.post(
-    '/procesar_formulario_pregunta', multerFactory.single('foto'),
+    '/procesar_formulario_pregunta',
     // El campo titulo ha de ser no vacío.
     check("titulo", "Este campo no puede estar vacío").notEmpty(),
     // El cuerpo ha de ser no vacío.
@@ -201,46 +226,39 @@ app.post(
     (request, response) => {
         const errors = validationResult(request);
         if (errors.isEmpty()) {
-            let usuario = {
-                email: request.body.email,
-                password: request.body.password,
-                nickname: request.body.nickname,
-                imagen: null,
-
+            let pregunta = {
+                titulo: request.body.titulo,
+                cuerpo: request.body.cuerpo,
+                etiquetas: request.body.etiquetas,    
             };
-            if (request.file) {
-                usuario.imagen = request.file.buffer;
-            }
-            insertarPregunta(usuario, function (err) {
+
+            insertarPregunta(pregunta, function (err) {
                 if (err) {
-                  console.log("Error de conexión a la base de datos" + err);
+                    console.log("Error de conexión a la base de datos" + err);
                 }
             });
         } else {
             let er = errors.mapped();
-            response.render("registro.ejs", {errores: errors.mapped()});    
+            response.render("formularPregunta.ejs", {usuario:request.session.usuario, errores: errors.mapped()});    
         }
 });
 
-function insertarPregunta(usuario, callback) {
+function insertarPregunta(pregunta, callback) {
     pool.getConnection(function (err, con) {
         if (err)
             callback(err);
         else {
-            if(usuario.imagen === null){
-                usuario.imagen = fs.readFileSync(__dirname + '/imagenes/defecto1.png');      
-            }
             let sql =
-                "INSERT INTO usuarios(email, password, foto, nickName) VALUES(?, ?, ?, ?)";
-            con.query(sql, [usuario.email, usuario.password,
-            usuario.imagen, usuario.nickname],
+                "INSERT INTO preguntas (titulo, cuerpo, etiquetas) VALUES(?, ?, ?)";
+            con.query(sql, [pregunta.titulo, pregunta.cuerpo,
+                pregunta.etiquetas],
                 function (err, result) {
                     con.release();
                     if (err)
                         callback(error);
                     else
                         console.log("CREADA CORRECTAMENTE")
-                        response.render("404login.ejs", {errores:{}});
+                        response.render("preguntas.ejs", {usuario:request.session.usuario}); 
                 });
         }
     });
