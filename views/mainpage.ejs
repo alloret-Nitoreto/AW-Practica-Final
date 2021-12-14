@@ -16,11 +16,11 @@
         <div class="container">
             <div class="row  justify-content-between" style=" margin: 10px;">
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                    <a class = "btn1 btn-primary btn-sm" href="/preguntas" id = "p">Preguntas</a>
+                    <button class = "btn1 btn-primary btn-sm" onclick = "location.href='/preguntas'">Preguntas</a>
                     
-                    <button class = "btn1 btn-primary btn-sm" onclick="sinResponder()" id = "sr">Sin Responder</button>
+                    <button class = "btn1 btn-primary btn-sm" onclick="location.href='/sin_responder'">Sin Responder</button>
                     
-                    <button class = "btn1 btn-primary btn-sm" onclick="users()" id = "u">Usuarios</button>
+                    <button class = "btn1 btn-primary btn-sm" onclick="location.href='/user'">Usuarios</button>
                 </div>
 
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
@@ -32,15 +32,19 @@
                     <h5 style = "margin-left: 60%; color: rgb(8, 82, 143);"><%= usuario.nickname %></h5>
                     <button class = "btn2 btn-primary btn-sm" style = "margin-left: 60%" href="/404login">Log Out</button>
                 </div>
-                 
             </div> 
         
             <div class="row justify-content-center" style="margin: auto">
                 <form action="/search">
-                    <button class = "btn3 btn-primary btn-sm" type="submit" id = "b">Buscar</button>
+                    <button class = "btn3 btn-primary btn-sm" type="submit">Buscar</button>
                     <input type ="text" size="118" style="border-radius: 8px;">
                 </form>    
             </div>
-        </div>  
+        </div>
+      <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>  
     </body>
 </html>

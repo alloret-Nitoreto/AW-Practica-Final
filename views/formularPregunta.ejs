@@ -1,26 +1,26 @@
 <!doctype html>
 <html>
     <head>
-      <title>404</title>
-      <link rel="shortcut icon" href="imagenes/logo.png">
-      <!-- Required meta tags -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  
-      <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-      <link rel = "stylesheet"  href="formularPregunta.css">
-
+        <link rel="shortcut icon" href="imagenes/logo.png">
+        <title>404</title>
+        
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel = "stylesheet"  href= "formularPregunta.css"> 
     </head>
     <body>
         <div class="container">
             <div class="row  justify-content-between" style=" margin: 10px;">
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                    <button class = "btn1 btn-primary btn-sm" href="/preguntas" id = "p">Preguntas</button>
+                    <button class = "btn1 btn-primary btn-sm" onclick = "location.href='/preguntas'">Preguntas</a>
                     
-                    <button class = "btn1 btn-primary btn-sm" onclick="sinResponder()" id = "sr">Sin Responder</button>
+                    <button class = "btn1 btn-primary btn-sm" onclick="location.href='/sin_responder'">Sin Responder</button>
                     
-                    <button class = "btn1 btn-primary btn-sm" onclick="users()" id = "u">Usuarios</button>
+                    <button class = "btn1 btn-primary btn-sm" onclick="location.href='/user'">Usuarios</button>
                 </div>
 
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
@@ -29,56 +29,52 @@
 
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
                     <img src="data:img/png;base64,<%= usuario.foto %>" id = "imgperfil" style ="margin-left: 65%" >
-                    <h5 style = "margin-left: 74%; color: rgb(8, 82, 143);"><%= usuario.nickname %></h5>
-                    <button class = "btn2 btn-primary btn-sm" style = "margin-left: 58%" href="/404login">Log Out</button>
+                    <h5 style = "margin-left: 60%; color: rgb(8, 82, 143);"><%= usuario.nickname %></h5>
+                    <button class = "btn2 btn-primary btn-sm" style = "margin-left: 60%" href="/404login">Log Out</button>
                 </div>
-                 
             </div> 
-        
+
             <div class="row justify-content-center" style="margin: auto">
-                <form action="/search">
-                    <button class = "btn3 btn-primary btn-sm" type="submit" id = "b">Buscar</button>
-                    <input type ="text" size="118" style="border-radius: 8px;">
-                </form>    
-            </div>
-        </div>  
-
-      <div class = "container-fluid">
-        <div class="d-flex flex-column align-items-center">
-          <form method="POST" action="/procesar_formulario_pregunta" class = "loginForm">
-            <div class = "margin">
-              <h4>Titulo</h4>
-              <input class = "form-control" type="text" name="titulo">  
-                <% if (errores.titulo) { %>
-                  <span class="rojo"> <%= errores.titulo.msg %> </span>
-                <% } %>   
+              <form action="/search">
+                  <button class = "btn3 btn-primary btn-sm" type="submit">Buscar</button>
+                  <input type ="text" size="118" style="border-radius: 8px;">
+              </form>    
             </div>
 
-            <div class = "margin">
-              <h4>Cuerpo</h4>
-              <input class = "form-control" type="text" name="cuerpo">
-                <% if (errores.cuerpo) { %>
-                  <span class="rojo"> <%= errores.cuerpo.msg %> </span>
-                <% } %>  
+            <div class = "row justify-content-center" style="margin-top: 2%;">
+              <form method="POST" action="/procesar_formulario_pregunta" class = "loginForm">
+                <div class = "margin">
+                  <h4>Titulo</h4>
+                  <input class = "form-control" type="text" name="titulo" size="90" style="border-radius: 8px;">  
+                    <% if (errores.titulo) { %>
+                      <span class="rojo"> <%= errores.titulo.msg %> </span>
+                    <% } %>   
+                </div>
+  
+                <div class = "margin">
+                  <h4>Cuerpo</h4>
+                  <textarea class = "form-control" type="text" name="cuerpo" rows = "5" size="90" style="border-radius: 8px;"></textarea>
+                    <% if (errores.cuerpo) { %>
+                      <span class="rojo"> <%= errores.cuerpo.msg %> </span>
+                    <% } %>  
+                </div>
+                    
+                <div class = "margin">
+                  <h4>Etiquetas</h4>
+                  <input class = "form-control" type = "text" name="etiquetas" size="90" style="border-radius: 8px;">
+                    <% if (errores.etiqueta) { %>
+                      <span class="rojo"> <%= errores.etiquetas.msg %> </span>
+                    <% } %>
+                </div>
+                  
+                <button class = "btn btn-primary" style="margin-top: 1%; align-self: center;" type="submit" id = "margin" style="width: auto;">Publica tu pregunta</button>
+              </form>
             </div>
-                
-            <div class = "margin">
-              <h4>Etiquetas</h4>
-              <input class = "form-control" type="text" name="etiquetas">
-                <% if (errores.etiqueta) { %>
-                  <span class="rojo"> <%= errores.etiquetas.msg %> </span>
-                <% } %>
-            </div>
-              
-            <button class = "btn btn-primary" type="submit" id = "margin">Publica tu pregunta</button>
-          </form>
-        </div>
-      </div>   
-      
+        </div> 
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>  
     </body>
 </html>
