@@ -81,7 +81,8 @@ app.post('/inicar_sesion',
         email: request.body.email,
         password: request.body.password,
         foto: null,
-        nickname: null
+        nickname: null,
+        id: null
     };
     const errors = validationResult(request);
 
@@ -105,6 +106,7 @@ app.post('/inicar_sesion',
                     else { 
                         usuario.foto = Buffer.from(result[0].foto).toString('base64'); 
                         usuario.nickname = result[0].nickName;
+                        usuario.id = result[0].id;
                         request.session.usuario = usuario;
                         response.render("mainpage.ejs", {usuario});
                     }            
@@ -175,9 +177,10 @@ function insertarUsuario(usuario, callback) {
                     con.release();
                     if (err)
                         callback(error);
-                    else
+                    else{
                         console.log("CREADA CORRECTAMENTE")
                         response.render("404login.ejs", {errores:{}});
+                    }
                 });
         }
     });
@@ -226,15 +229,20 @@ app.post(
     (request, response) => {
         const errors = validationResult(request);
         if (errors.isEmpty()) {
+            let d = new Date();
             let pregunta = {
                 titulo: request.body.titulo,
                 cuerpo: request.body.cuerpo,
                 etiquetas: request.body.etiquetas,    
+                fecha: d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate(),
+                usuarioId: request.session.usuario.id
             };
 
             insertarPregunta(pregunta, function (err) {
                 if (err) {
                     console.log("Error de conexión a la base de datos" + err);
+                }else{
+                    response.render("preguntas.ejs", {usuario:request.session.usuario}); 
                 }
             });
         } else {
@@ -243,23 +251,55 @@ app.post(
         }
 });
 
-function insertarPregunta(pregunta, callback) {
+function obtenerPregunta( callback) {
     pool.getConnection(function (err, con) {
         if (err)
             callback(err);
         else {
-            let sql =
-                "INSERT INTO preguntas (titulo, cuerpo, etiquetas) VALUES(?, ?, ?)";
+
+            let sql = "SELECT* FROM preguntas AS p INNER JOIN formular AS f ON p.id = f.idPregunta INNER JOIN usuarios AS u ON u.id = f.idUsuario";
             con.query(sql, [pregunta.titulo, pregunta.cuerpo,
-                pregunta.etiquetas],
+                pregunta.etiquetas, pregunta.fecha],
                 function (err, result) {
                     con.release();
                     if (err)
                         callback(error);
                     else
-                        console.log("CREADA CORRECTAMENTE")
-                        response.render("preguntas.ejs", {usuario:request.session.usuario}); 
+                        callback(null); 
                 });
+        }
+    });
+}
+
+function insertarPregunta(pregunta, callback) {
+    pool.getConnection(function (err, con) {
+        if (err){
+            callback(err);
+        }else {
+
+            let sql =
+                "INSERT INTO preguntas (titulo, cuerpo, etiquetas, fecha) VALUES(?, ?, ?, ?)";
+            con.query(sql, [pregunta.titulo, pregunta.cuerpo,
+            pregunta.etiquetas, pregunta.fecha],
+            function (err, result) {
+                if (err){
+                    callback(error);
+                }else {
+                let id = result;
+                    let sql =
+                        "INSERT into formular (idUsuario, idPregunta) VALUES (?, ?)";
+                    con.query(sql, [pregunta.usuarioId, result.insertId],
+                    function (err,response, result) {
+                        con.release();
+                        if (err){
+                            callback(error);
+                        }else {
+                            console.log("CREADA CORRECTAMENTE")
+                            callback(null);
+                        }                    
+                    });
+                }
+            });
         }
     });
 }
