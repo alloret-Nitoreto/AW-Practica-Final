@@ -56,7 +56,7 @@ app.get("/ir_inicar_sesion", function (request, response) {
 });
 
 app.get("/preguntas", function (request, response) {
-    response.render("preguntas.ejs", {usuario:request.session.usuario});
+   obtenerPregunta(request);
 });
 
 app.get("/formularPregunta", function (request, response) {
@@ -251,21 +251,22 @@ app.post(
         }
 });
 
-function obtenerPregunta( callback) {
+function obtenerPregunta(request) {
     pool.getConnection(function (err, con) {
         if (err)
             callback(err);
         else {
 
             let sql = "SELECT* FROM preguntas AS p INNER JOIN formular AS f ON p.id = f.idPregunta INNER JOIN usuarios AS u ON u.id = f.idUsuario";
-            con.query(sql, [pregunta.titulo, pregunta.cuerpo,
-                pregunta.etiquetas, pregunta.fecha],
+            con.query(sql,
                 function (err, result) {
                     con.release();
                     if (err)
                         callback(error);
-                    else
-                        callback(null); 
+                    else{
+                        response.render("preguntas.ejs", {usuario:request.session.usuario, preguntas:result});
+                    }
+                      
                 });
         }
     });
