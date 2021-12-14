@@ -6,6 +6,7 @@ html {
 
 body{
     background: linear-gradient(0deg, hsl(194, 72%, 47%) 0%, rgb(255, 255, 255) 100%);
+    background-attachment: fixed;
     display: flex;
 	flex-direction: column;
 }
@@ -94,4 +95,8 @@ h1{
 #te{
     color: rgb(8, 82, 143);
     font-size: 15px;
+}
+
+.fixed{
+    position: fixed;
 }
