@@ -22,7 +22,6 @@
                     
                     <button class = "btn1 btn-primary btn-sm" onclick="location.href='/user'">Usuarios</button>
                 </div>
-
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
                     <h1 style="text-align:initial">404</h1>
                 </div>
@@ -68,7 +67,7 @@
                             <div class="panel-footer" id = "foo">
                                 <% pregunta.etiquetas.forEach( etiqueta => { %>
                                     <% if (etiqueta != ''){%>
-                                        <p><mark><%=etiqueta%></mark></p>
+                                        <p onclick = "location.href='/etiqueta/<%=etiqueta%>'"><mark><%=etiqueta%></mark></p>
                                     <%}%>
                                 <% }); %> 
                             </div>
