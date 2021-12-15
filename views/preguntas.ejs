@@ -34,9 +34,9 @@
             </div> 
         
             <div class="row justify-content-center" style="margin-top: 20%">
-                <form action="/search">
+                <form action="/busqueda" method="POST">
                     <button class = "btn3 btn-primary btn-sm" type="submit">Buscar</button>
-                    <input type ="text" size="118" style="border-radius: 8px;">
+                    <input type ="text" size="118" style="border-radius: 8px;" name="cuerpo">
                 </form>    
             </div>
             
@@ -67,7 +67,11 @@
                             <div class="panel-footer" id = "foo">
                                 <% pregunta.etiquetas.forEach( etiqueta => { %>
                                     <% if (etiqueta != ''){%>
-                                        <p onclick = "location.href='/etiqueta/<%=etiqueta%>'"><mark><%=etiqueta%></mark></p>
+                                        <form action="/etiqueta" method="POST">
+                                            <input type="hidden" name="etiqueta" value="<%=etiqueta%>">
+                                            <button type="submit"><mark><%=etiqueta%></mark></button>
+                                        </form>
+                                        
                                     <%}%>
                                 <% }); %> 
                             </div>
