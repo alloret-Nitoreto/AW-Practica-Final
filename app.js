@@ -111,7 +111,7 @@ app.post('/inicar_sesion',
                                 }
                                 else {
                                     usuario.foto = Buffer.from(result[0].foto).toString('base64');
-                                    usuario.nickname = result[0].nickName;
+                                    usuario.nickname = result[0].nickname;
                                     usuario.id = result[0].id;
                                     request.session.usuario = usuario;
                                     response.render("mainpage.ejs", { usuario });
@@ -176,7 +176,7 @@ function insertarUsuario(usuario, callback) {
                 usuario.imagen = fs.readFileSync(__dirname + '/imagenes/defecto1.png');
             }
             let sql =
-                "INSERT INTO usuarios(email, password, foto, nickName) VALUES(?, ?, ?, ?)";
+                "INSERT INTO usuarios(email, password, foto, nickname) VALUES(?, ?, ?, ?)";
             con.query(sql, [usuario.email, usuario.password,
             usuario.imagen, usuario.nickname],
                 function (err, result) {
@@ -222,6 +222,18 @@ const max5 = (param) => {
         return false;
     }
 };
+
+app.post("/preguntaDetalles", function (request, response) {
+    let pregunta = {
+        titulo: request.body.titulo,
+        cuerpo: request.body.cuerpo,
+        etiquetas: request.body.etiquetas,
+        fecha: request.body.fecha,
+        nickname: request.body.nickname,
+        foto: request.body.foto
+    };
+    response.render("preguntaDetalles.ejs", { usuario: request.session.usuario, pregunta});
+});
 
 app.post(
     '/procesar_formulario_pregunta',
