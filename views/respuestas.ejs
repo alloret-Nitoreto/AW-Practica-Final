@@ -10,7 +10,7 @@
     
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel = "stylesheet"  href= "mainpage.css"> 
+        <link rel = "stylesheet"  href= "/public/respuestas.css"> 
     </head>
     <body>
         <div class="container-flex">
@@ -40,7 +40,78 @@
                     <input type ="text" size="118" style="border-radius: 8px;" name = "cuerpo">
                 </form>    
             </div>
+            
+            <div class="panel panel-info">
+                <div class="row justify-content-center">
+                    <div class="col-8">
+                        <div class="panel-heading" id="hea">
+                            <h4 h4 class="text-center" style="color: rgb(8, 82, 143); font-weight: bolder; margin-top: 2%; margin-right: 100%;"><%= pregunta.titulo %></h4>
+                        </div>
 
+                        <div class="panel-body" id="bod">
+                            <p class="text-justify">Eereasmdcksacksacmklspsajsajdlñsakldks</p>
+                            <% pregunta.etiquetas.forEach( etiqueta => { %>
+                                <% if (etiqueta != ''){%>
+                                    <form action="/etiqueta" method="POST">
+                                        <input type="hidden" name="etiqueta" value="<%=etiqueta%>">
+                                        <button class = "btn3 btn-primary btn-sm" type="submit"><%=etiqueta%></button>
+                                    </form>
+                                    
+                                <%}%>
+                            <% }); %> 
+                        </div>
+
+                        <div class="panel-footer" style="margin-left: 90%" id = "te">
+                            <h5 class="text-center" id = "te">Formulada <%= pregunta.fecha %></h5>
+                            <img src="data:img/png;base64,<%= pregunta.foto %>" id = "imgperfil1" style ="margin-left: 44%; margin-top: 1%;" >
+                            <h5 class="text-center" style = "margin-top: 1%" id = "te"><%= pregunta.nickname %></h5>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="row justify-content-center">
+                    <div class="col-8">
+                        <div class="panel-heading" id="hea">
+                            <h4 h4 class="text-center" style="color: rgb(8, 82, 143); font-weight: bolder; margin-top: 2%; margin-right: 100%;"><%= respuestas.cont%> respuestas</h4>
+                        </div>
+
+                        <div class="panel-body" id="bod" style="margin-left: 5%;">
+                            <p class="text-justify">Eereasmdcksacksacmklspsajsajdlñsakldks</p>
+                            <% pregunta.etiquetas.forEach( etiqueta => { %>
+                                <% if (etiqueta != ''){%>
+                                    <form action="/etiqueta" method="POST">
+                                        <input type="hidden" name="etiqueta" value="<%=etiqueta%>">
+                                        <button class = "btn3 btn-primary btn-sm" type="submit"><%=etiqueta%></button>
+                                    </form>
+                                    
+                                <%}%>
+                            <% }); %> 
+                        </div>
+
+                        <div class="panel-footer" style="margin-left: 90%">
+                            <h5 class="text-center" id = "te">Formulada <%= pregunta.fecha %></h5>
+                            <img src="data:img/png;base64,<%= pregunta.foto %>" id = "imgperfil1" style ="margin-left: 44%; margin-top: 1%;" >
+                            <h5 class="text-center" style = "margin-top: 1%" id = "te"><%= pregunta.nickname %></h5>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-info">
+                <div class="row justify-content-center">
+                    <div class="col-8">
+                        <h4 class="text-center" style="color: rgb(8, 82, 143); font-weight: bolder; margin-top: 2%; margin-right: 100%; margin-bottom: 5%;">Tú Respuesta</h4>
+                        <form action="POST">
+                            <textarea class ="form-control"name="cuerpo" type="text" size= "90" rows="5" style="margin-bottom: 3%;"></textarea>
+                            <button class = "btn btn-primary" style="margin-bottom: 10%; align-self: center;" type="submit" id = "margin" style="width: auto;">Publica tu pregunta</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
             
         </div>
       <!-- Optional JavaScript -->
