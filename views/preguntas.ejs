@@ -33,7 +33,7 @@
                 </div>
             </div> 
         
-            <div class="row justify-content-center" style="margin-top: 20%">
+            <div class="row justify-content-center" style="margin-top: 5%">
                 <form action="/busqueda" method="POST">
                     <button class = "btn3 btn-primary btn-sm" type="submit">Buscar</button>
                     <input type ="text" size="118" style="border-radius: 8px;" name="cuerpo">
@@ -69,7 +69,7 @@
                                     <% if (etiqueta != ''){%>
                                         <form action="/etiqueta" method="POST">
                                             <input type="hidden" name="etiqueta" value="<%=etiqueta%>">
-                                            <button type="submit"><mark><%=etiqueta%></mark></button>
+                                            <button style = "border-radius: 10px; background-color: rgb(8, 82, 143); width: auto; height: auto;"type="submit"><%=etiqueta%></button>
                                         </form>
                                         
                                     <%}%>
