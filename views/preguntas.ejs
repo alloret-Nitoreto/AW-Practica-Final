@@ -10,7 +10,7 @@
     
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel = "stylesheet"  href= "/public/preguntas.css"> 
+        <link rel = "stylesheet"  href= "preguntas.css"> 
     </head>
     <body>
         <div class="container">
@@ -47,36 +47,41 @@
                     
             <div class="row justify-content-center">
                 <div class="col-4 justify-content-center">
-                    <h5 style="margin-top: 8%; color:rgb(8, 82, 143);">6 preguntas</h5>
+                    <h5 style="margin-top: 8%; color:rgb(8, 82, 143);"><%= preguntas.cont%> preguntas</h5>
                 </div>
                 <div class="col-4">
                     <button class="btn1 btn-primary btn-sm" style="margin-left: 70%;" onclick = "location.href='/formularPregunta'">Formular Pregunta</button>                            </div>
                 </div>
             </div>
+            <% preguntas.forEach( pregunta => { %>
+                <div class="panel panel-info">
+                    <div class="row">
+                        <div class="col-8 align-self-center">
+                            <div class="panel-heading" id = "hea">
+                                <p class="text-justify"><%= pregunta.titulo %></p> 
+                            </div>
 
-            <div class="panel panel-info">
-                <div class="row">
-                    <div class="col-8 align-self-center">
-                        <div class="panel-heading" id = "hea">
-                            <p class="text-justify">Esto es la cabacera de la pregunta</p> 
+                            <div class="panel-body" id = "bod">
+                                <p class="text-justify"><%= pregunta.cuerpo %></p> 
+                            </div>
+
+                            <div class="panel-footer" id = "foo">
+                                <% pregunta.etiquetas.forEach( etiqueta => { %>
+                                    <% if (etiqueta != ''){%>
+                                        <p><mark><%=etiqueta%></mark></p>
+                                    <%}%>
+                                <% }); %> 
+                            </div>
                         </div>
-
-                        <div class="panel-body" id = "bod">
-                            <p class="text-justify">Esto es la respuesta</p> 
+                
+                        <div class="col-4 align-self-center">
+                            <h5 class="text-center" id = "te">Formulada <%= pregunta.fecha %></h5>
+                            <img src="data:img/png;base64,<%= pregunta.foto %>" id = "imgperfil1" style ="margin-left: 44%; margin-top: 1%;" >
+                            <h5 class="text-center" style = "margin-top: 1%" id = "te"><%= pregunta.nickname %></h5>
                         </div>
-
-                        <div class="panel-footer" id = "foo">
-                            <p><mark>css</mark></p>
-                        </div>
-                    </div>
-
-                    <div class="col-4 align-self-center">
-                        <h5 class="text-center" id = "te">Formulada 10/12/2020</h5>
-                        <img src="data:img/png;base64,<%= usuario.foto %>" id = "imgperfil1" style ="margin-left: 44%; margin-top: 1%;" >
-                        <h5 class="text-center" style = "margin-top: 1%" id = "te"><%= usuario.nickname %></h5>
                     </div>
                 </div>
-            </div>
+            <% }); %> 
         </div> 
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->

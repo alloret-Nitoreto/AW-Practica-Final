@@ -56,7 +56,7 @@ app.get("/ir_inicar_sesion", function (request, response) {
 });
 
 app.get("/preguntas", function (request, response) {
-   obtenerPregunta(request);
+   obtenerPregunta(request, response);
 });
 
 app.get("/formularPregunta", function (request, response) {
@@ -251,7 +251,7 @@ app.post(
         }
 });
 
-function obtenerPregunta(request) {
+function obtenerPregunta(request, response) {
     pool.getConnection(function (err, con) {
         if (err)
             callback(err);
@@ -264,6 +264,15 @@ function obtenerPregunta(request) {
                     if (err)
                         callback(error);
                     else{
+                        let cont=0;
+                        result.forEach(pregunta => {
+                            cont++;
+                            pregunta.foto = Buffer.from(pregunta.foto).toString('base64'); 
+                            pregunta.etiquetas =  pregunta.etiquetas.split( /@/);
+                            pregunta.fecha =  pregunta.fecha.getFullYear() + "-" + pregunta.fecha.getMonth() + "-" + pregunta.fecha.getDate();
+                        });
+                        result.cont = cont;
+                        
                         response.render("preguntas.ejs", {usuario:request.session.usuario, preguntas:result});
                     }
                       
