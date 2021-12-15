@@ -223,18 +223,6 @@ const max5 = (param) => {
     }
 };
 
-app.post("/preguntaDetalles", function (request, response) {
-    let pregunta = {
-        titulo: request.body.titulo,
-        cuerpo: request.body.cuerpo,
-        etiquetas: request.body.etiquetas,
-        fecha: request.body.fecha,
-        nickname: request.body.nickname,
-        foto: request.body.foto
-    };
-    response.render("preguntaDetalles.ejs", { usuario: request.session.usuario, pregunta});
-});
-
 app.post(
     '/procesar_formulario_pregunta',
     // El campo titulo ha de ser no vacío.
@@ -327,7 +315,6 @@ function insertarPregunta(pregunta, callback) {
                     if (err) {
                         callback(error);
                     } else {
-                        let id = result;
                         let sql =
                             "INSERT into formular (idUsuario, idPregunta) VALUES (?, ?)";
                         con.query(sql, [pregunta.usuarioId, result.insertId],
@@ -347,5 +334,99 @@ function insertarPregunta(pregunta, callback) {
 }
 
 //----------------------- Preguntas -----------------------------
+
+app.post("/preguntaDetalles", function (request, response) {
+    let pregunta = {
+        titulo: request.body.titulo,
+        cuerpo: request.body.cuerpo,
+        etiquetas: request.body.etiquetas,
+        fecha: request.body.fecha,
+        nickname: request.body.nickname,
+        foto: request.body.foto
+    };
+    obtenerRespuestas(pregunta, request, response)
+    
+});
+
+//----------------------- Respuesta -----------------------------
+app.post(
+    '/procesar_formulario_respuest',
+    // El campo titulo ha de ser no vacío.
+    check("respuesta", "Este campo no puede estar vacío").notEmpty(),
+    (request, response) => {
+        const errors = validationResult(request);
+        if (errors.isEmpty()) {
+            let d = new Date();
+            let respuesta = {
+                respuesta: request.body.respuesta,
+                fecha: d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate(),
+                usuarioId: request.session.usuario.id
+            };
+
+            pool.getConnection(function (err, con) {
+                if (err) {
+                    callback(err);
+                } else {
+        
+                    let sql =
+                        "INSERT INTO respuesta (respuesta, fecha) VALUES( ?, ?)";
+                    con.query(sql, [pregunta.respuesta, pregunta.fecha],
+                        function (err, result) {
+                            if (err) {
+                                callback(error);
+                            } else {
+                                let sql =
+                                    "INSERT into responder (idUsuario, idRespuesta) VALUES (?, ?)";
+                                con.query(sql, [pregunta.usuarioId, result.insertId],
+                                    function (err, response, result) {
+                                        con.release();
+                                        if (err) {
+                                            callback(error);
+                                        } else {
+                                            obtenerPreguntas('todo', '', request, response);
+                                        }
+                                    });
+                            }
+                        });
+                }
+            });
+        } else {
+            let er = errors.mapped();
+            response.render("formularPregunta.ejs", { usuario: request.session.usuario, errores: errors.mapped() });
+        }
+});
+
+
+function obtenerRespuestas(pregunta, request, response) {
+    pool.getConnection(function (err, con) {
+        if (err)
+            callback(err);
+        else {
+            let sql = "SELECT* FROM respuestas AS re INNER JOIN responder AS rs ON re.id = rs.idRespuesta INNER JOIN usuarios AS u ON u.id = rs.idUsuario WHERE rs.idPregunta = ?";
+            con.query(sql, [pregunta.id],
+                function (err, result) {
+                    con.release();
+                    if (err)
+                        callback(error);
+                    else {
+                        let cont = 0;
+                        let respuesta;
+                        result.forEach(pregunta => {
+                            cont++;
+                            respuesta.foto = Buffer.from(result.foto).toString('base64');
+                            respuesta.respuesta = result.respuesta;
+                            respuesta.fecha = result.fecha;
+                            respuesta.nickname = result.nickname
+                        });
+                        result.cont = cont;
+
+                        response.render("respuestas.ejs", { usuario: request.session.usuario, pregunta, respuesta:result });
+                    }
+
+                });
+        }
+    });
+}
+//----------------------- Respuesta -----------------------------
 
 //-----------------POST-------------------------

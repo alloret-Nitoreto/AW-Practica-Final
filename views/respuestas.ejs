@@ -79,22 +79,13 @@
                         </div>
 
                         <div class="panel-body" id="bod" style="margin-left: 5%;">
-                            <p class="text-justify">Eereasmdcksacksacmklspsajsajdlñsakldks</p>
-                            <% pregunta.etiquetas.forEach( etiqueta => { %>
-                                <% if (etiqueta != ''){%>
-                                    <form action="/etiqueta" method="POST">
-                                        <input type="hidden" name="etiqueta" value="<%=etiqueta%>">
-                                        <button class = "btn3 btn-primary btn-sm" type="submit"><%=etiqueta%></button>
-                                    </form>
-                                    
-                                <%}%>
-                            <% }); %> 
+                            <p class="text-justify"><%= respuesta.respuesta %></p>
                         </div>
 
                         <div class="panel-footer" style="margin-left: 90%">
-                            <h5 class="text-center" id = "te">Formulada <%= pregunta.fecha %></h5>
-                            <img src="data:img/png;base64,<%= pregunta.foto %>" id = "imgperfil1" style ="margin-left: 44%; margin-top: 1%;" >
-                            <h5 class="text-center" style = "margin-top: 1%" id = "te"><%= pregunta.nickname %></h5>
+                            <h5 class="text-center" id = "te">Formulada <%= respuesta.fecha %></h5>
+                            <img src="data:img/png;base64,<%= respuesta.foto %>" id = "imgperfil1" style ="margin-left: 44%; margin-top: 1%;" >
+                            <h5 class="text-center" style = "margin-top: 1%" id = "te"><%= respuesta.nickname %></h5>
                         </div>
                         
                     </div>
