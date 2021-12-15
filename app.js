@@ -8,6 +8,8 @@ const session = require("express-session");
 const fs = require("fs");
 const { check, validationResult } = require("express-validator");
 const bodyParser = require("body-parser");
+const config = require("./config.js");
+
 const app = express();
 
 const middlewareSession = session({
@@ -25,12 +27,7 @@ const multerFactory = multer({ storage: multer.memoryStorage() });
 
 const mysql = require("mysql");
 const { symlinkSync } = require("fs");
-const pool = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "practicafinal"
-});
+const pool = mysql.createPool(config.mysqlConfig);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -42,6 +39,15 @@ const ficherosEstaticos =
 app.use(express.static(ficherosEstaticos));
 
 //-----------------GET-------------------------
+
+app.listen(config.port, function (err) {
+    if (err) {
+        console.error("No se pudo inicializar el servidor: " +
+            err.message);
+    } else {
+        console.log("Servidor arrancado en el puerto 3000");
+    }
+});
 
 app.get("/", function (request, response) {
     response.render("404login.ejs", { errores: {} });
@@ -331,12 +337,3 @@ function insertarPregunta(pregunta, callback) {
 //----------------------- Preguntas -----------------------------
 
 //-----------------POST-------------------------
-
-app.listen(3000, function (err) {
-    if (err) {
-        console.error("No se pudo inicializar el servidor: " +
-            err.message);
-    } else {
-        console.log("Servidor arrancado en el puerto 3000");
-    }
-});
