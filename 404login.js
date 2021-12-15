@@ -55,8 +55,13 @@ app.get("/ir_inicar_sesion", function (request, response) {
     response.render("404login.ejs", {errores:{}});
 });
 
+app.get("/etiqueta/:etiqueta", function (request, response) {
+    let etiqueta = String(request.params.etiqueta);
+    obtenerPreguntas('etiqueta',etiqueta,request, response);
+});
+
 app.get("/preguntas", function (request, response) {
-   obtenerPregunta(request, response);
+    obtenerPreguntas('todo', '',request, response);
 });
 
 app.get("/formularPregunta", function (request, response) {
@@ -251,12 +256,17 @@ app.post(
         }
 });
 
-function obtenerPregunta(request, response) {
+function obtenerPreguntas(tipoBusqueda, dato, request, response) {
     pool.getConnection(function (err, con) {
         if (err)
             callback(err);
         else {
-
+            let sqlAdd= '';
+            switch(tipoBusqueda){
+                case 'todo': break;
+                case'etiqueta': sqlAdd = 'where '
+                case 'busqueda': sqlAdd = 'where'
+            }
             let sql = "SELECT* FROM preguntas AS p INNER JOIN formular AS f ON p.id = f.idPregunta INNER JOIN usuarios AS u ON u.id = f.idUsuario";
             con.query(sql,
                 function (err, result) {
