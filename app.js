@@ -8,6 +8,8 @@ const session = require("express-session");
 const fs = require("fs");
 const { check, validationResult } = require("express-validator");
 const bodyParser = require("body-parser");
+const config = require("./config.js");
+
 const app = express();
 
 const middlewareSession = session({
@@ -25,12 +27,7 @@ const multerFactory = multer({ storage: multer.memoryStorage() });
 
 const mysql = require("mysql");
 const { symlinkSync } = require("fs");
-const pool = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "practicafinal"
-});
+const pool = mysql.createPool(config.mysqlConfig);
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -42,6 +39,15 @@ const ficherosEstaticos =
 app.use(express.static(ficherosEstaticos));
 
 //-----------------GET-------------------------
+
+app.listen(config.port, function (err) {
+    if (err) {
+        console.error("No se pudo inicializar el servidor: " +
+            err.message);
+    } else {
+        console.log("Servidor arrancado en el puerto 3000");
+    }
+});
 
 app.get("/", function (request, response) {
     response.render("404login.ejs", { errores: {} });
@@ -105,7 +111,7 @@ app.post('/inicar_sesion',
                                 }
                                 else {
                                     usuario.foto = Buffer.from(result[0].foto).toString('base64');
-                                    usuario.nickname = result[0].nickName;
+                                    usuario.nickname = result[0].nickname;
                                     usuario.id = result[0].id;
                                     request.session.usuario = usuario;
                                     response.render("mainpage.ejs", { usuario });
@@ -170,7 +176,7 @@ function insertarUsuario(usuario, callback) {
                 usuario.imagen = fs.readFileSync(__dirname + '/imagenes/defecto1.png');
             }
             let sql =
-                "INSERT INTO usuarios(email, password, foto, nickName) VALUES(?, ?, ?, ?)";
+                "INSERT INTO usuarios(email, password, foto, nickname) VALUES(?, ?, ?, ?)";
             con.query(sql, [usuario.email, usuario.password,
             usuario.imagen, usuario.nickname],
                 function (err, result) {
@@ -216,6 +222,18 @@ const max5 = (param) => {
         return false;
     }
 };
+
+app.post("/preguntaDetalles", function (request, response) {
+    let pregunta = {
+        titulo: request.body.titulo,
+        cuerpo: request.body.cuerpo,
+        etiquetas: request.body.etiquetas,
+        fecha: request.body.fecha,
+        nickname: request.body.nickname,
+        foto: request.body.foto
+    };
+    response.render("preguntaDetalles.ejs", { usuario: request.session.usuario, pregunta});
+});
 
 app.post(
     '/procesar_formulario_pregunta',
@@ -331,12 +349,3 @@ function insertarPregunta(pregunta, callback) {
 //----------------------- Preguntas -----------------------------
 
 //-----------------POST-------------------------
-
-app.listen(3000, function (err) {
-    if (err) {
-        console.error("No se pudo inicializar el servidor: " +
-            err.message);
-    } else {
-        console.log("Servidor arrancado en el puerto 3000");
-    }
-});
