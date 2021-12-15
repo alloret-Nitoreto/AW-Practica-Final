@@ -29,7 +29,7 @@
                 <div class = "col-sm-2 col-md-2 col-lg-2 col-xl-2">
                     <img src="data:img/png;base64,<%= usuario.foto %>" id = "imgperfil" style ="margin-left: 65%" >
                     <h5 style = "margin-left: 60%; color: rgb(8, 82, 143);"><%= usuario.nickname %></h5>
-                    <button class = "btn2 btn-primary btn-sm" style = "margin-left: 60%" onclick="location.href='/'">Log Out</button>
+                    <button class = "btn2 btn-primary btn-sm" style = "margin-left: 60%" href="/404login">Log Out</button>
                 </div>
             </div> 
         
@@ -64,12 +64,12 @@
                                 <p class="text-justify"><%= pregunta.cuerpo %></p> 
                             </div>
 
-                            <div class="panel-footer" id = "foo">
+                            <div class="panel-footer" style ="margin-top: 1%;" id = "foo">
                                 <% pregunta.etiquetas.forEach( etiqueta => { %>
                                     <% if (etiqueta != ''){%>
                                         <form action="/etiqueta" method="POST">
                                             <input type="hidden" name="etiqueta" value="<%=etiqueta%>">
-                                            <button style = "border-radius: 10px; background-color: rgb(8, 82, 143); width: auto; height: auto;"type="submit"><%=etiqueta%></button>
+                                            <button style = "color:rgb(0, 47, 85); border: none; background-color: transparent; width: auto; height: auto;" type="submit"><%=etiqueta%></button>
                                         </form>
                                         
                                     <%}%>
