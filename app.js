@@ -361,36 +361,44 @@ app.post(
             usuarioId: request.session.usuario.id,
             idPregunta: request.body.idPregunta
         };
-
-        pool.getConnection(function (err, con) {
+        insertarRespuesta(respuesta, function (err) {
             if (err) {
-                callback(err);
-            } else {
-    
-                let sql =
-                    "INSERT INTO respuestas (respuesta, fecha) VALUES( ?, ?)";
-                con.query(sql, [respuesta.respuesta, respuesta.fecha],
-                    function (err, result) {
-                        if (err) {
-                            callback(error);
-                        } else {
-                            let sql =
-                                "INSERT into responder (idUsuario, idRespuesta, idPregunta) VALUES (?, ? ,?)";
-                            con.query(sql, [respuesta.usuarioId, result.insertId, respuesta.idPregunta],
-                                function (err, response, result) {
-                                    con.release();
-                                    if (err) {
-                                        callback(error);
-                                    } else {
-                                        obtenerPreguntas('todo', '', request, response);
-                                    }
-                                });
-                        }
-                    });
+                console.log("Error de conexión a la base de datos" + err);
+            }else{
+                obtenerPreguntas('todo', '', request, response);
             }
         });
+        
 });
 
+function insertarRespuesta(respuesta, callback) {
+    pool.getConnection(function (err, con) {
+        if (err) {
+            callback(err);
+        } else {
+            let sql =
+                "INSERT INTO respuestas (respuesta, fecha) VALUES( ?, ?)";
+            con.query(sql, [respuesta.respuesta, respuesta.fecha],
+                function (err, result) {
+                    if (err) {
+                        callback(error);
+                    } else {
+                        let sql =
+                            "INSERT into responder (idUsuario, idRespuesta, idPregunta) VALUES (?, ? ,?)";
+                        con.query(sql, [respuesta.usuarioId, result.insertId, respuesta.idPregunta],
+                            function (err) {
+                                con.release();
+                                if (err) {
+                                    callback(error);
+                                } else {
+                                    callback(null)
+                                }
+                            });
+                    }
+                });
+        }
+    });
+}
 
 function obtenerRespuestas(pregunta, request, response) {
     pool.getConnection(function (err, con) {
