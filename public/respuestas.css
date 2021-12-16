@@ -21,6 +21,10 @@ h1{
     color: rgb(8, 82, 143);
 }
 
+h4{
+    white-space: nowrap;
+}
+
 .btn1{
     width: 150px;
     height: auto;
@@ -60,7 +64,8 @@ h1{
 }
 
 .panel{
-    border-radius: 20px;
+    border-top: solid 5px ;
+    border-color: rgb(8, 82, 143);
     width: auto;
     height: auto;
     margin-left: 18%;
