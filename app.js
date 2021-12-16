@@ -10,6 +10,7 @@ const { check, validationResult } = require("express-validator");
 const bodyParser = require("body-parser");
 const config = require("./config.js");
 
+
 const app = express();
 
 const middlewareSession = session({
@@ -81,7 +82,7 @@ app.post('/inicar_sesion',
     check("email", "No es un correo electronico valido").isEmail(),
     // El campo password ha de ser no vacío.
     check("password", "Este campo no puede estar vacío").notEmpty(),
-    (request, response) => {
+    (request, response, next) => {
 
         let usuario = {
             email: request.body.email,
@@ -95,7 +96,7 @@ app.post('/inicar_sesion',
         if (errors.isEmpty()) {
             pool.getConnection(function (err, connection) {
                 if (err) {
-                    callback(new Error("Error de acceso a la base de datos:" + err));
+                    next(err);
                 }
                 else {
                     connection.query("SELECT * FROM usuarios WHERE email = ? AND password = ?",
@@ -103,11 +104,11 @@ app.post('/inicar_sesion',
                         function (err, result) {
                             connection.release(); // devolver al pool la conexión 
                             if (err) {
-                                callback(new Error("Error al inicar sesion:" + err));
+                                next(err);
                             }
                             else {
                                 if (result.length === 0) {
-                                    console.log("No es correcta la contraseña o el mail"); //no está el usuario con el password proporcionado 
+                                    next( err)//no está el usuario con el password proporcionado 
                                 }
                                 else {
                                     usuario.foto = Buffer.from(result[0].foto).toString('base64');
@@ -159,6 +160,8 @@ app.post(
             insertarUsuario(usuario, function (err) {
                 if (err) {
                     console.log("Error de conexión a la base de datos" + err);
+                }else{
+                    response.render("404login.ejs", { errores: {} });
                 }
             });
         } else {
@@ -179,13 +182,12 @@ function insertarUsuario(usuario, callback) {
                 "INSERT INTO usuarios(email, password, foto, nickname) VALUES(?, ?, ?, ?)";
             con.query(sql, [usuario.email, usuario.password,
             usuario.imagen, usuario.nickname],
-                function (err, result) {
+                function (err, response) {
                     con.release();
                     if (err)
-                        callback(error);
+                        callback(err);
                     else {
-                        console.log("CREADA CORRECTAMENTE")
-                        response.render("404login.ejs", { errores: {} });
+                        callback(null);         
                     }
                 });
         }
@@ -212,12 +214,16 @@ const max5 = (param) => {
     if (param != "") {
         let re = /(?<=@)\w+/;
         let etiquetas = param.match(re);
-        if (etiquetas.length <= 5) {
-            param = etiquetas;
-            return true;
-        } else {
+        if(etiquetas != null){
+            if (etiquetas.length <= 5) {
+                param = etiquetas;
+                return true;
+            } else {
+                return false;
+            }
+        }else
             return false;
-        }
+
     } else {
         return false;
     }
@@ -232,7 +238,7 @@ app.post(
     //Las etiquetas no pueden tener espacios
     check('etiquetas', 'No puede tener espacios').custom(sinEspacio),
     //Las etiquetas no pueden ser mas de 5
-    check('etiquetas', 'No pueden ser mas de 5').custom(max5),
+    check('etiquetas', 'No pueden ser mas de 5 o null').custom(max5),
     (request, response) => {
         const errors = validationResult(request);
         if (errors.isEmpty()) {
@@ -249,7 +255,7 @@ app.post(
                 if (err) {
                     console.log("Error de conexión a la base de datos" + err);
                 } else {
-                    response.render("preguntas.ejs", { usuario: request.session.usuario });
+                    obtenerPreguntas('todo', '', request, response);
                 }
             });
         } else {
@@ -282,7 +288,7 @@ function obtenerPreguntas(tipoBusqueda, dato, request, response) {
                 function (err, result) {
                     con.release();
                     if (err)
-                        callback(error);
+                        callback(err);
                     else {
                         let cont = 0;
                         result.forEach(pregunta => {
@@ -313,7 +319,7 @@ function insertarPregunta(pregunta, callback) {
             pregunta.etiquetas, pregunta.fecha],
                 function (err, result) {
                     if (err) {
-                        callback(error);
+                        callback(err);
                     } else {
                         let sql =
                             "INSERT into formular (idUsuario, idPregunta) VALUES (?, ?)";
@@ -321,7 +327,7 @@ function insertarPregunta(pregunta, callback) {
                             function (err, response, result) {
                                 con.release();
                                 if (err) {
-                                    callback(error);
+                                    callback(err);
                                 } else {
                                     console.log("CREADA CORRECTAMENTE")
                                     callback(null);
@@ -381,7 +387,7 @@ function insertarRespuesta(respuesta, callback) {
             con.query(sql, [respuesta.respuesta, respuesta.fecha],
                 function (err, result) {
                     if (err) {
-                        callback(error);
+                        callback(err);
                     } else {
                         let sql =
                             "INSERT into responder (idUsuario, idRespuesta, idPregunta) VALUES (?, ? ,?)";
@@ -389,7 +395,7 @@ function insertarRespuesta(respuesta, callback) {
                             function (err) {
                                 con.release();
                                 if (err) {
-                                    callback(error);
+                                    callback(err);
                                 } else {
                                     callback(null)
                                 }
@@ -410,7 +416,7 @@ function obtenerRespuestas(pregunta, request, response) {
                 function (err, result) {
                     con.release();
                     if (err)
-                        callback(error);
+                        callback(err);
                     else {
                         let cont = 0;
                         result.forEach(respuesta => {
@@ -429,4 +435,23 @@ function obtenerRespuestas(pregunta, request, response) {
 }
 //----------------------- Respuesta -----------------------------
 
-//-----------------POST-------------------------
+//-----------------ERROR-------------------------
+
+app.use((error, response) => {
+    console.log(response);
+   // Código 500: Internal server error
+   response.status(500);
+   response.render("error", {
+       tipo: "500",
+       mensaje: error.message
+   });
+});
+
+app.use((error, response) => {
+    console.log(response);
+   // Código 500: Internal server error
+   response.status(404);
+   response.render("error", {
+       tipo: "404"
+   });
+});
