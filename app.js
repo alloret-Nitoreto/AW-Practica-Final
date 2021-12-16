@@ -335,14 +335,15 @@ function insertarPregunta(pregunta, callback) {
 
 //----------------------- Preguntas -----------------------------
 
-app.post("/preguntaDetalles", function (request, response) {
+app.post("/formularRespuesta", function (request, response) {
     let pregunta = {
         titulo: request.body.titulo,
         cuerpo: request.body.cuerpo,
-        etiquetas: request.body.etiquetas,
+        etiquetas: request.body.etiquetas.split(/,/),
         fecha: request.body.fecha,
         nickname: request.body.nickname,
-        foto: request.body.foto
+        foto: request.body.foto,
+        idPregunta: request.body.idPregunta
     };
     obtenerRespuestas(pregunta, request, response)
     
@@ -350,50 +351,44 @@ app.post("/preguntaDetalles", function (request, response) {
 
 //----------------------- Respuesta -----------------------------
 app.post(
-    '/procesar_formulario_respuest',
-    // El campo titulo ha de ser no vacío.
-    check("respuesta", "Este campo no puede estar vacío").notEmpty(),
+    '/procesar_formulario_respuesta',
     (request, response) => {
-        const errors = validationResult(request);
-        if (errors.isEmpty()) {
-            let d = new Date();
-            let respuesta = {
-                respuesta: request.body.respuesta,
-                fecha: d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate(),
-                usuarioId: request.session.usuario.id
-            };
+    const errors = validationResult(request);
+        let d = new Date();
+        let respuesta = {
+            respuesta: request.body.respuesta,
+            fecha: d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate(),
+            usuarioId: request.session.usuario.id,
+            idPregunta: request.body.idPregunta
+        };
 
-            pool.getConnection(function (err, con) {
-                if (err) {
-                    callback(err);
-                } else {
-        
-                    let sql =
-                        "INSERT INTO respuesta (respuesta, fecha) VALUES( ?, ?)";
-                    con.query(sql, [pregunta.respuesta, pregunta.fecha],
-                        function (err, result) {
-                            if (err) {
-                                callback(error);
-                            } else {
-                                let sql =
-                                    "INSERT into responder (idUsuario, idRespuesta) VALUES (?, ?)";
-                                con.query(sql, [pregunta.usuarioId, result.insertId],
-                                    function (err, response, result) {
-                                        con.release();
-                                        if (err) {
-                                            callback(error);
-                                        } else {
-                                            obtenerPreguntas('todo', '', request, response);
-                                        }
-                                    });
-                            }
-                        });
-                }
-            });
-        } else {
-            let er = errors.mapped();
-            response.render("formularPregunta.ejs", { usuario: request.session.usuario, errores: errors.mapped() });
-        }
+        pool.getConnection(function (err, con) {
+            if (err) {
+                callback(err);
+            } else {
+    
+                let sql =
+                    "INSERT INTO respuestas (respuesta, fecha) VALUES( ?, ?)";
+                con.query(sql, [respuesta.respuesta, respuesta.fecha],
+                    function (err, result) {
+                        if (err) {
+                            callback(error);
+                        } else {
+                            let sql =
+                                "INSERT into responder (idUsuario, idRespuesta, idPregunta) VALUES (?, ? ,?)";
+                            con.query(sql, [respuesta.usuarioId, result.insertId, respuesta.idPregunta],
+                                function (err, response, result) {
+                                    con.release();
+                                    if (err) {
+                                        callback(error);
+                                    } else {
+                                        obtenerPreguntas('todo', '', request, response);
+                                    }
+                                });
+                        }
+                    });
+            }
+        });
 });
 
 
@@ -403,24 +398,21 @@ function obtenerRespuestas(pregunta, request, response) {
             callback(err);
         else {
             let sql = "SELECT* FROM respuestas AS re INNER JOIN responder AS rs ON re.id = rs.idRespuesta INNER JOIN usuarios AS u ON u.id = rs.idUsuario WHERE rs.idPregunta = ?";
-            con.query(sql, [pregunta.id],
+            con.query(sql, [pregunta.idPregunta],
                 function (err, result) {
                     con.release();
                     if (err)
                         callback(error);
                     else {
                         let cont = 0;
-                        let respuesta;
-                        result.forEach(pregunta => {
+                        result.forEach(respuesta => {
                             cont++;
-                            respuesta.foto = Buffer.from(result.foto).toString('base64');
-                            respuesta.respuesta = result.respuesta;
-                            respuesta.fecha = result.fecha;
-                            respuesta.nickname = result.nickname
+                            respuesta.foto = Buffer.from(respuesta.foto).toString('base64');
+                            respuesta.fecha = respuesta.fecha.getFullYear() + "-" + respuesta.fecha.getMonth() + "-" + respuesta.fecha.getDate();
                         });
                         result.cont = cont;
 
-                        response.render("respuestas.ejs", { usuario: request.session.usuario, pregunta, respuesta:result });
+                        response.render("respuestas.ejs", { usuario: request.session.usuario, pregunta, respuestas:result });
                     }
 
                 });
